@@ -88,24 +88,8 @@ const resolvers = {
       if (context.user === undefined || context.user === null) {
         throw new Error("Unauthorized access. Please login first");
       }
-      const allUsersResponse = await Accounts.find({ roles: "vendor" });
-      return allUsersResponse.map(user => {
-        return {
-          _id: user._id,
-          userId: user.userId,
-          username: user.username,
-          emails: user.emails,
-          createdAt: user.createdAt,
-          name: user.name,
-          roles: user.roles,
-          bio: user.bio,
-          updatedAt: user.updatedAt,
-          total_spent: user.total_spent,
-          shopId: user.shopId,
-          billing: user.billing,
-          shipping: user.shipping,
-        }
-      });
+      const allUsersResponse = await Accounts.find({ roles: "vendor" }).toArray();
+      return allUsersResponse;
     }
   },
 };
