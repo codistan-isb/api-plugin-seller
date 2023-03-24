@@ -1,39 +1,40 @@
 input accountBookInput {
   AccountTitle: String
-  swiftCode:String
-  AccountNo:String
-  isActive:Boolean
-  AccountId:ID!
-  AccountBookId:ID
+  swiftCode: String
+  AccountNo: String
+  isActive: Boolean
+  AccountId: ID!
+  AccountBookId: ID
 }
 
 type AccountBook {
-  _id:ID!
+  _id: ID!
   AccountTitle: String
-  swiftCode:String
-  AccountNo:String
-  isActive:Boolean
+  swiftCode: String
+  AccountNo: String
+  isActive: Boolean
 }
 
 input AvailableFulfillmentMethodInput {
-  AccountId:ID!
-  FulfillmentMethodId:ID!
-  status:Boolean!
-  }
-  
-scalar AvailableFulfillmentMethod 
-
-extend type Mutation {
-  updateAccountpayBookEntry(input:accountBookInput):AccountBook
-  updateAvailableFulfillmentMethodEntry(input:AvailableFulfillmentMethodInput):[AvailableFulfillmentMethod]
-
+  AccountId: ID!
+  FulfillmentMethodId: ID!
+  status: Boolean!
 }
 
+scalar AvailableFulfillmentMethod
+
+extend type Mutation {
+  updateAccountpayBookEntry(input: accountBookInput): AccountBook
+  updateAvailableFulfillmentMethodEntry(
+    input: AvailableFulfillmentMethodInput
+  ): [AvailableFulfillmentMethod]
+  getAllUsers: [Account]
+}
 
 extend type ProductVariant {
   uploadedBy: uploadedBy
-  ancestorId:ID
-   parentId:ID
+  ancestorId: ID
+  parentId: ID
 }
 extend input ProductVariantInput {
   uploadedBy: uploadedByinput
@@ -41,25 +42,24 @@ extend input ProductVariantInput {
 
 extend type CatalogProductVariant {
   uploadedBy: uploadedBy
-  ancestorId:ID
-parentId:ID
+  ancestorId: ID
+  parentId: ID
 }
 type uploadedBy {
-  name:String
-  image:String
-  userId:ID
-  FulfillmentMethods:[AvailableFulfillmentMethod]
- }
+  name: String
+  image: String
+  userId: ID
+  FulfillmentMethods: [AvailableFulfillmentMethod]
+}
 input uploadedByinput {
-  name:String
-  image:String
-  userId:ID
+  name: String
+  image: String
+  userId: ID
 }
 extend type Account {
-productVariants:[ProductVariant]
-identityVerified:Boolean
-orderFulfillment:[Order]
-AccountBook:[AccountBook]
-AvailableFulfillmentMethods:[AvailableFulfillmentMethod]
+  productVariants: [ProductVariant]
+  identityVerified: Boolean
+  orderFulfillment: [Order]
+  AccountBook: [AccountBook]
+  AvailableFulfillmentMethods: [AvailableFulfillmentMethod]
 }
-

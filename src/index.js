@@ -40,8 +40,8 @@ const resolvers = {
       );
       return userOrders;
     },
-    AvailableFulfillmentMethods(parent, args, context, info){
-      let reaction_response=parent.fulfillmentMethods&&parent.fulfillmentMethods.length>0?parent.fulfillmentMethods.map(id=>{ return encodeOpaqueIdFunction("reaction/fulfillmentMethod",id)}):[]
+    AvailableFulfillmentMethods(parent, args, context, info) {
+      let reaction_response = parent.fulfillmentMethods && parent.fulfillmentMethods.length > 0 ? parent.fulfillmentMethods.map(id => { return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id) }) : []
       return reaction_response;
     }
   },
@@ -60,13 +60,13 @@ const resolvers = {
       console.log("uploadedBy userId", parent.uploadedBy.userId);
       if (parent.uploadedBy.userId) {
         let userInfo = await getUserByUserId(context, parent.uploadedBy.userId);
-        let FulfillmentMethods=userInfo.fulfillmentMethods&&userInfo.fulfillmentMethods.length>0?userInfo.fulfillmentMethods.map(id=>{ return encodeOpaqueIdFunction("reaction/fulfillmentMethod",id)}):[];
+        let FulfillmentMethods = userInfo.fulfillmentMethods && userInfo.fulfillmentMethods.length > 0 ? userInfo.fulfillmentMethods.map(id => { return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id) }) : [];
 
         return {
           name: userInfo.profile.username,
           userId: userInfo.userId,
           Image: userInfo.profile.picture,
-          FulfillmentMethods:FulfillmentMethods
+          FulfillmentMethods: FulfillmentMethods
         };
       }
     },
@@ -79,12 +79,38 @@ const resolvers = {
     },
     async updateAvailableFulfillmentMethodEntry(parent, args, context, info) {
       let updateResponse = await updateUserFulfillmentMethod(context, args.input);
-      let reaction_response=updateResponse.length>0?updateResponse.map(id=>{ return encodeOpaqueIdFunction("reaction/fulfillmentMethod",id)}):[]
+      let reaction_response = updateResponse.length > 0 ? updateResponse.map(id => { return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id) }) : []
       return reaction_response;
     },
+    async getAllUsers(parent, args, context, info) {
+      console.log(args)
+      console.log(context);
+      if (context.user === undefined || context.user === null) {
+        throw new Error("Unauthorized access. Please login first");
+      }
+      const allUsersResponse = await Accounts.find({ roles: "vendor" });
+      return allUsersResponse.map(user => {
+        return {
+          _id: user._id,
+          userId: user.userId,
+          username: user.username,
+          emails: user.emails,
+          createdAt: user.createdAt,
+          name: user.name,
+          roles: user.roles,
+          bio: user.bio,
+          updatedAt: user.updatedAt,
+          total_spent: user.total_spent,
+          shopId: user.shopId,
+          billing: user.billing,
+          shipping: user.shipping,
+          groups: user.groups
+        }
+      });
+    }
   },
 };
-function encodeOpaqueIdFunction(source,id){
+function encodeOpaqueIdFunction(source, id) {
   return encodeOpaqueId(source, id)
 }
 function myStartup1(context) {
