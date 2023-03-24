@@ -82,7 +82,7 @@ const resolvers = {
       let reaction_response = updateResponse.length > 0 ? updateResponse.map(id => { return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id) }) : []
       return reaction_response;
     },
-    async getAllUsers(parent, args, context, info) {
+    async getAllSeller(parent, args, context, info) {
       console.log(args)
       console.log(context);
       if (context.user === undefined || context.user === null) {

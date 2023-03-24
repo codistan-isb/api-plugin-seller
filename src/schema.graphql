@@ -28,7 +28,7 @@ extend type Mutation {
   updateAvailableFulfillmentMethodEntry(
     input: AvailableFulfillmentMethodInput
   ): [AvailableFulfillmentMethod]
-  getAllUsers: [Account]
+  getAllSeller: [Account]
 }
 
 extend type ProductVariant {
