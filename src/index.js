@@ -104,7 +104,6 @@ const resolvers = {
           shopId: user.shopId,
           billing: user.billing,
           shipping: user.shipping,
-          groups: user.groups
         }
       });
     }
