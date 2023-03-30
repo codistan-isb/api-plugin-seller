@@ -22,13 +22,14 @@ input AvailableFulfillmentMethodInput {
 }
 
 scalar AvailableFulfillmentMethod
-
+extend type Query {
+  getAllSeller: [Account]
+}
 extend type Mutation {
   updateAccountpayBookEntry(input: accountBookInput): AccountBook
   updateAvailableFulfillmentMethodEntry(
     input: AvailableFulfillmentMethodInput
   ): [AvailableFulfillmentMethod]
-  getAllSeller: [Account]
 }
 
 extend type ProductVariant {

@@ -71,7 +71,17 @@ const resolvers = {
       }
     },
   },
-  Query: {},
+  Query: {
+    async getAllSeller(parent, args, context, info) {
+      console.log(args)
+      console.log(context);
+      if (context.user === undefined || context.user === null) {
+        throw new Error("Unauthorized access. Please login first");
+      }
+      const allUsersResponse = await Accounts.find({ roles: "vendor" }).toArray();
+      return allUsersResponse;
+    }
+  },
   Mutation: {
     async updateAccountpayBookEntry(parent, args, context, info) {
       let updateResponse = await updateUserAccountBook(context, args.input);
@@ -82,15 +92,6 @@ const resolvers = {
       let reaction_response = updateResponse.length > 0 ? updateResponse.map(id => { return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id) }) : []
       return reaction_response;
     },
-    async getAllSeller(parent, args, context, info) {
-      console.log(args)
-      console.log(context);
-      if (context.user === undefined || context.user === null) {
-        throw new Error("Unauthorized access. Please login first");
-      }
-      const allUsersResponse = await Accounts.find({ roles: "vendor" }).toArray();
-      return allUsersResponse;
-    }
   },
 };
 function encodeOpaqueIdFunction(source, id) {
