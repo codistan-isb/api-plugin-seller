@@ -7,6 +7,9 @@ import getVariantsByUserId from "./utils/getVariants.js";
 import getUserByUserId from "./utils/getUser.js";
 import updateUserAccountBook from "./utils/updateUserAccountBook.js";
 import updateUserFulfillmentMethod from "./utils/updateUserFulfillmentMethod.js";
+import sellerCatalogItems from "./resolvers/Query/catalogItems.js";
+
+
 
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 var _context = null;
@@ -78,6 +81,7 @@ const resolvers = {
     },
   },
   Query: {
+    
     async getAllSeller(parent, args, context, info) {
     
       // if (context.user === undefined || context.user === null) {
@@ -90,7 +94,8 @@ const resolvers = {
       const  allUsersResponse= await Accounts.find({ roles: "vendor",storeName:"reemarehmanvirgo" }).skip(offset).limit(limit).toArray();
       
       return allUsersResponse;
-    }
+    },
+    sellerCatalogItems
   },
   Mutation: {
     async updateAccountpayBookEntry(parent, args, context, info) {
@@ -184,7 +189,7 @@ export default async function register(app) {
     },
     graphQL: {
       schemas: [mySchema],
-      resolvers,
+      resolvers
     },
   });
 }
