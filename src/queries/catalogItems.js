@@ -16,7 +16,6 @@ import ReactionError from "@reactioncommerce/reaction-error";
 export default async function catalogItems(context, { searchQuery, sellerIds, tagIds, catalogBooleanFilters } = {}) {
   const { collections } = context;
   const { Catalog } = collections;
-  console.log("sellerIds",sellerIds)
   if ((!sellerIds || sellerIds.length === 0) && (!tagIds || tagIds.length === 0)) {
     throw new ReactionError("invalid-param", "You must provide tagIds or sellerIds or both");
   }

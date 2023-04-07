@@ -24,7 +24,6 @@ import catalogItems from "../../queries/catalogItems.js"
  */
 export default async function sellerCatalogItems(_, args, context, info) {
   
-  console.log("args",args)
   const { sellerIds , tagIds: opaqueTagIds, booleanFilters, searchQuery, ...connectionArgs } = args;
 
   const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);
