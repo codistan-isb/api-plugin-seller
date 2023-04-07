@@ -91,7 +91,7 @@ const resolvers = {
       let {offset,limit}=args;
    
       
-      const  allUsersResponse= await Accounts.find({ roles: "vendor",storeName:"reemarehmanvirgo" }).skip(offset).limit(limit).toArray();
+      const  allUsersResponse= await Accounts.find({ roles: "vendor" }).skip(offset).limit(limit).toArray();
       
       return allUsersResponse;
     },
