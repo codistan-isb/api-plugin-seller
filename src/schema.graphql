@@ -47,6 +47,7 @@ extend type CatalogProductVariant {
 type uploadedBy {
   name: String
   image: String
+  storeName:String
   userId: ID
   FulfillmentMethods: [AvailableFulfillmentMethod]
 }
@@ -62,6 +63,16 @@ extend type Account {
   AccountBook: [AccountBook]
   AvailableFulfillmentMethods: [AvailableFulfillmentMethod]
 }
+type SellerInfo  {
+  _id:ID
+  name:String
+  storeName:String
+  picture:String
+}
 type Query {
-  getAllSeller: [Account]
+  getAllSeller(
+limit:Int =10
+offset:Int =0
+searchQuery: String
+): [SellerInfo]
 }

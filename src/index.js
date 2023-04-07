@@ -11,6 +11,11 @@ import updateUserFulfillmentMethod from "./utils/updateUserFulfillmentMethod.js"
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 var _context = null;
 const resolvers = {
+  SellerInfo :{
+    picture(parent,args,context,info){
+      return parent?.profile?.picture;
+    }
+  },
   Account: {
     async productVariants(parent, args, context, info) {
       let productVariant = await getVariantsByUserId(
@@ -60,12 +65,13 @@ const resolvers = {
       console.log("uploadedBy userId", parent.uploadedBy.userId);
       if (parent.uploadedBy.userId) {
         let userInfo = await getUserByUserId(context, parent.uploadedBy.userId);
-        let FulfillmentMethods = userInfo.fulfillmentMethods && userInfo.fulfillmentMethods.length > 0 ? userInfo.fulfillmentMethods.map(id => { return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id) }) : [];
+        let FulfillmentMethods = userInfo?.fulfillmentMethods && userInfo.fulfillmentMethods.length > 0 ? userInfo.fulfillmentMethods.map(id => { return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id) }) : [];
 
         return {
-          name: userInfo.profile.username,
-          userId: userInfo.userId,
-          Image: userInfo.profile.picture,
+          name: userInfo?.profile?.username,
+          storeName:userInfo?.storeName,
+          userId: userInfo?.userId,
+          Image: userInfo?.profile?.picture,
           FulfillmentMethods: FulfillmentMethods
         };
       }
@@ -73,14 +79,16 @@ const resolvers = {
   },
   Query: {
     async getAllSeller(parent, args, context, info) {
-      console.log(args)
-      console.log(context.collections);
-      if (context.user === undefined || context.user === null) {
-        throw new Error("Unauthorized access. Please login first");
-      }
+    
+      // if (context.user === undefined || context.user === null) {
+      //   throw new Error("Unauthorized access. Please login first");
+      // }
       const { Accounts } = context.collections;
-      const allUsersResponse = await Accounts.find({ roles: "vendor" }).toArray();
-      console.log(allUsersResponse)
+      let {offset,limit}=args;
+   
+      
+      const  allUsersResponse= await Accounts.find({ roles: "vendor",storeName:"reemarehmanvirgo" }).skip(offset).limit(limit).toArray();
+      
       return allUsersResponse;
     }
   },
