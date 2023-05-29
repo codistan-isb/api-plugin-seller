@@ -10,12 +10,11 @@ import updateUserFulfillmentMethod from "./utils/updateUserFulfillmentMethod.js"
 import sellerCatalogItems from "./resolvers/Query/catalogItems.js";
 
 
-
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 var _context = null;
 const resolvers = {
-  SellerInfo :{
-    picture(parent,args,context,info){
+  SellerInfo: {
+    picture(parent, args, context, info) {
       return parent?.profile?.picture;
     }
   },
@@ -72,7 +71,7 @@ const resolvers = {
 
         return {
           name: userInfo?.profile?.username,
-          storeName:userInfo?.storeName,
+          storeName: userInfo?.storeName,
           userId: userInfo?.userId,
           Image: userInfo?.profile?.picture,
           FulfillmentMethods: FulfillmentMethods
@@ -81,21 +80,20 @@ const resolvers = {
     },
   },
   Query: {
-    
     async getAllSeller(parent, args, context, info) {
-    
+
       // if (context.user === undefined || context.user === null) {
       //   throw new Error("Unauthorized access. Please login first");
       // }
       const { Accounts } = context.collections;
-      let {offset,limit}=args;
-   
-      
-      const  allUsersResponse= await Accounts.find({ roles: "vendor" }).skip(offset).limit(limit).toArray();
-      
+      let { offset, limit } = args;
+
+
+      const allUsersResponse = await Accounts.find({ roles: "vendor" }).skip(offset).limit(limit).toArray();
+
       return allUsersResponse;
     },
-    sellerCatalogItems
+    sellerCatalogItems,
   },
   Mutation: {
     async updateAccountpayBookEntry(parent, args, context, info) {

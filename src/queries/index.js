@@ -13,5 +13,6 @@ export default {
   findCatalogProductsAndVariants,
   findProductAndVariant,
   findVariantInCatalogProduct,
-  vendors
+  vendors,
+  
 };

@@ -5,5 +5,5 @@ import vendors from "./vendors.js";
 export default {
   sellerCatalogItems,
   catalogItemProduct,
-  vendors
+  vendors,
 };

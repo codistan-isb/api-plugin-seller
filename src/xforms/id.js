@@ -11,6 +11,7 @@ const namespaces = {
 export const encodeUnitOpaqueId = encodeOpaqueId(namespaces.Unit);
 export const encodeShopOpaqueId = encodeOpaqueId(namespaces.Shop);
 export const encodeTagOpaqueId = encodeOpaqueId(namespaces.Tag);
+export const decodeProductOpaqueId = decodeOpaqueIdForNamespace(namespaces.Product);
 
 export const encodeCatalogItemOpaqueId = encodeOpaqueId("reaction/catalogItem");
 export const encodeCatalogProductOpaqueId = encodeOpaqueId("reaction/catalogProduct");

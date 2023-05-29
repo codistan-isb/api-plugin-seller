@@ -47,7 +47,7 @@ extend type CatalogProductVariant {
 type uploadedBy {
   name: String
   image: String
-  storeName:String
+  storeName: String
   userId: ID
   FulfillmentMethods: [AvailableFulfillmentMethod]
 }
@@ -63,43 +63,44 @@ extend type Account {
   AccountBook: [AccountBook]
   AvailableFulfillmentMethods: [AvailableFulfillmentMethod]
 }
-type SellerInfo  {
-  _id:ID
-  name:String
-  storeName:String
-  picture:String
+type SellerInfo {
+  _id: ID
+  name: String
+  storeName: String
+  picture: String
 }
+
 type Query {
-    sellerCatalogItems(
+  sellerCatalogItems(
     "Provide a list of shop IDs from which you want to get catalog items"
     sellerIds: [ID]!
 
     "Optionally provide a list of tag IDs to further filter the item list"
-    tagIds: [ID],
+    tagIds: [ID]
 
     "Additional filters to apply"
-    booleanFilters: [CatalogBooleanFilter],
+    booleanFilters: [CatalogBooleanFilter]
 
     "Optional text search query"
-    searchQuery: String,
+    searchQuery: String
 
     "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
-    after: ConnectionCursor,
+    after: ConnectionCursor
 
     "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
-    before: ConnectionCursor,
+    before: ConnectionCursor
 
     "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
-    first: ConnectionLimitInt,
+    first: ConnectionLimitInt
 
     "Return at most this many results. This parameter may be used with the `before` parameter."
-    last: ConnectionLimitInt,
+    last: ConnectionLimitInt
 
     "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
-    offset: Int,
+    offset: Int
 
     "Return results sorted in this order"
-    sortOrder: SortOrder = desc,
+    sortOrder: SortOrder = desc
 
     "Provide a Currency code if sortBy is minPrice"
     sortByPriceCurrencyCode: String
@@ -109,8 +110,10 @@ type Query {
   ): CatalogItemConnection
 
   getAllSeller(
-limit:Int =10
-offset:Int =0
-searchQuery: String
-): [SellerInfo]
+    limit: Int = 10
+    offset: Int = 0
+    searchQuery: String
+  ): [SellerInfo]
+
+ 
 }
