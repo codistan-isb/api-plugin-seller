@@ -9,7 +9,7 @@ export default async function updateSellerInfo(context, input) {
     city,
     contactNumber,
     bankDetails: { bankName, bankAccountNumber },
-    documentDetails: { cnicNumber, cnicImage },
+    documentDetails: { cnicNumber, cnicImageFront, cnicImageBack },
   } = input;
 
   const updates = {};
@@ -42,7 +42,8 @@ export default async function updateSellerInfo(context, input) {
   if (cnicNumber) {
     const documentDetails = {
       cnicNumber: cnicNumber,
-      cnicImage: cnicImage,
+      cnicImageFront: cnicImageFront,
+      cnicImageBack: cnicImageBack,
     };
     updates["documentDetails"] = documentDetails;
     updatedFields.push("documentDetails");
