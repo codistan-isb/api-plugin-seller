@@ -23,8 +23,6 @@ input AvailableFulfillmentMethodInput {
 
 scalar AvailableFulfillmentMethod
 
-
-
 extend type ProductVariant {
   uploadedBy: uploadedBy
   ancestorId: ID
@@ -58,36 +56,34 @@ extend type Account {
   AccountBook: [AccountBook]
   AvailableFulfillmentMethods: [AvailableFulfillmentMethod]
 }
-input bankDetailsInput{
- bankName:String
- bankAcountNumber:String
-
+input bankDetailsInput {
+  bankName: String
+  bankAcountNumber: String
 }
 type bankDetailsPayload {
   bankName: String
   bankAcountNumber: String
 }
 input documentsDetailInput {
-cnicNumber:Int
-cnicImageFront:String
-cnicImageBack:String
+  cnicNumber: String
+  cnicImageFront: String
+  cnicImageBack: String
 }
 type documentsDetailPayload {
-  cnicNumber: Int
-  cnicImageFront:String
-   cnicImageBack:String
+  cnicNumber: String
+  cnicImageFront: String
+  cnicImageBack: String
 }
-type updateSellerInfopayload{
-  _id:ID
-  profileImage:String
-  storeName:String,
-  pickUpAddress:String
-  city:String
-  contactNumber:String
- 
-    bankDetails:[bankDetailsPayload]
-  documentDetails:[documentsDetailPayload]
+type updateSellerInfopayload {
+  _id: ID
+  profileImage: String
+  storeName: String
+  pickUpAddress: String
+  city: String
+  contactNumber: String
 
+  bankDetails: [bankDetailsPayload]
+  documentDetails: [documentsDetailPayload]
 }
 type SellerInfo {
   _id: ID
@@ -107,11 +103,10 @@ input updateSellerInput {
 }
 extend type Mutation {
   updateAccountpayBookEntry(input: accountBookInput): AccountBook
-  updateSellerInfo(input:updateSellerInput):updateSellerInfopayload
+  updateSellerInfo(input: updateSellerInput): updateSellerInfopayload
   updateAvailableFulfillmentMethodEntry(
     input: AvailableFulfillmentMethodInput
   ): [AvailableFulfillmentMethod]
-  
 }
 type Query {
   sellerCatalogItems(
@@ -157,5 +152,4 @@ type Query {
     offset: Int = 0
     searchQuery: String
   ): [SellerInfo]
- 
 }
