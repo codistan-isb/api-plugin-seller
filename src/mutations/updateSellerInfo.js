@@ -1,5 +1,9 @@
-// import { decodeAccountOpaqueId } from "../../xforms/id.js";
+import ReactionError from "@reactioncommerce/reaction-error";
+
 export default async function updateSellerInfo(context, input) {
+  if (!context.user) {
+    throw new ReactionError("access-denied", "Access Denied");
+  }
   const { Accounts } = context.collections;
   const {
     _id,
@@ -19,7 +23,7 @@ export default async function updateSellerInfo(context, input) {
   }
 
   if (storeName) {
-    updates[" storeName"] = storeName;
+    updates["storeName"] = storeName;
   }
   if (pickUpAddress) {
     updates["pickUpAddress"] = pickUpAddress;
@@ -50,8 +54,8 @@ export default async function updateSellerInfo(context, input) {
   }
   const updatedAccountResp = await Accounts.findOneAndUpdate(
     { _id },
-    { $set: updates }, // Use $set operator to update fields
+    { $set: updates }, 
     { returnOriginal: false }
   );
-  console.log(updatedAccountResp, "sssss");
+  return updatedAccountResp.value;
 }
