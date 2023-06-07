@@ -1,22 +1,27 @@
 import pkg from "../package.json";
 import SimpleSchema from "simpl-schema";
 import importAsString from "@reactioncommerce/api-utils/importAsString.js";
-const mySchema = importAsString("./schema.graphql");
+// const mySchema = importAsString("./schema.graphql");
+import schemas from "./schemas/index.js";
 import getOrdersByUserId from "./utils/getOrders.js";
 import getVariantsByUserId from "./utils/getVariants.js";
 import getUserByUserId from "./utils/getUser.js";
 import updateUserAccountBook from "./utils/updateUserAccountBook.js";
 import updateUserFulfillmentMethod from "./utils/updateUserFulfillmentMethod.js";
 import sellerCatalogItems from "./resolvers/Query/catalogItems.js";
+import mutations from "./mutations/index.js";
+import queries from "./queries/index.js";
 
+import updateSellerInfo from "./resolvers/Mutation/updateSellerInfo.js";
 
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
+// import updateSellerinfo from "./mutations/updateSellerinfo";
 var _context = null;
 const resolvers = {
   SellerInfo: {
     picture(parent, args, context, info) {
       return parent?.profile?.picture;
-    }
+    },
   },
   Account: {
     async productVariants(parent, args, context, info) {
@@ -48,9 +53,14 @@ const resolvers = {
       return userOrders;
     },
     AvailableFulfillmentMethods(parent, args, context, info) {
-      let reaction_response = parent.fulfillmentMethods && parent.fulfillmentMethods.length > 0 ? parent.fulfillmentMethods.map(id => { return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id) }) : []
+      let reaction_response =
+        parent.fulfillmentMethods && parent.fulfillmentMethods.length > 0
+          ? parent.fulfillmentMethods.map((id) => {
+              return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id);
+            })
+          : [];
       return reaction_response;
-    }
+    },
   },
   ProductVariant: {
     async ancestorId(parent, args, context, info) {
@@ -67,48 +77,66 @@ const resolvers = {
       console.log("uploadedBy userId", parent.uploadedBy.userId);
       if (parent.uploadedBy.userId) {
         let userInfo = await getUserByUserId(context, parent.uploadedBy.userId);
-        let FulfillmentMethods = userInfo?.fulfillmentMethods && userInfo.fulfillmentMethods.length > 0 ? userInfo.fulfillmentMethods.map(id => { return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id) }) : [];
+        let FulfillmentMethods =
+          userInfo?.fulfillmentMethods && userInfo.fulfillmentMethods.length > 0
+            ? userInfo.fulfillmentMethods.map((id) => {
+                return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id);
+              })
+            : [];
 
         return {
           name: userInfo?.profile?.username,
           storeName: userInfo?.storeName,
           userId: userInfo?.userId,
           Image: userInfo?.profile?.picture,
-          FulfillmentMethods: FulfillmentMethods
+          FulfillmentMethods: FulfillmentMethods,
         };
       }
     },
   },
   Query: {
     async getAllSeller(parent, args, context, info) {
-
       // if (context.user === undefined || context.user === null) {
       //   throw new Error("Unauthorized access. Please login first");
       // }
       const { Accounts } = context.collections;
       let { offset, limit } = args;
 
-
-      const allUsersResponse = await Accounts.find({ roles: "vendor" }).skip(offset).limit(limit).toArray();
+      const allUsersResponse = await Accounts.find({ roles: "vendor" })
+        .skip(offset)
+        .limit(limit)
+        .toArray();
 
       return allUsersResponse;
     },
     sellerCatalogItems,
   },
   Mutation: {
+    updateSellerInfo,
     async updateAccountpayBookEntry(parent, args, context, info) {
       let updateResponse = await updateUserAccountBook(context, args.input);
       return updateResponse;
     },
     async updateAvailableFulfillmentMethodEntry(parent, args, context, info) {
-      let updateResponse = await updateUserFulfillmentMethod(context, args.input);
-      let reaction_response = updateResponse.length > 0 ? updateResponse.map(id => { return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id) }) : []
+      let updateResponse = await updateUserFulfillmentMethod(
+        context,
+        args.input
+      );
+      let reaction_response =
+        updateResponse.length > 0
+          ? updateResponse.map((id) => {
+              return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id);
+            })
+          : [];
       return reaction_response;
     },
+    // async updateSellerInfo(parent, { input }, context, info) {
+    //   console.log(input);
+    // },
   },
 };
 function encodeOpaqueIdFunction(source, id) {
-  return encodeOpaqueId(source, id)
+  return encodeOpaqueId(source, id);
 }
 function myStartup1(context) {
   _context = context;
@@ -185,9 +213,13 @@ export default async function register(app) {
       startup: [myStartup1],
       publishProductToCatalog: [myPublishProductToCatalog],
     },
+
     graphQL: {
-      schemas: [mySchema],
-      resolvers
+      schemas,
+      // schemas: [mySchema],
+      resolvers,
     },
+    queries,
+    mutations,
   });
 }
