@@ -13,7 +13,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {String[]} [params.tags] - Tag IDs to include (OR)
  * @returns {Promise<MongoCursor>} - A MongoDB cursor for the proper query
  */
-export default async function catalogItems(context, { searchQuery, sellerIds, tagIds, catalogBooleanFilters } = {}) {
+export default async function sellercatalogItems(context, { searchQuery, sellerIds, tagIds, catalogBooleanFilters } = {}) {
   const { collections } = context;
   const { Catalog } = collections;
   if ((!sellerIds || sellerIds.length === 0) && (!tagIds || tagIds.length === 0)) {
