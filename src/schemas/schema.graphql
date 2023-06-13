@@ -46,6 +46,7 @@ type uploadedBy {
 }
 input uploadedByinput {
   name: String
+  storeName:String,
   image: String
   userId: ID
 }
@@ -101,6 +102,7 @@ input updateSellerInput {
   bankDetails: bankDetailsInput
   documentDetails: documentsDetailInput
 }
+
 extend type Mutation {
   updateAccountpayBookEntry(input: accountBookInput): AccountBook
   updateSellerInfo(input: updateSellerInput): updateSellerInfopayload
@@ -108,7 +110,79 @@ extend type Mutation {
     input: AvailableFulfillmentMethodInput
   ): [AvailableFulfillmentMethod]
 }
+
 type Query {
+  "Query for a single Product"
+  sellerProduct(
+    sellerId: ID!
+
+    "Product ID"
+    productId: ID!
+
+    "Shop ID"
+    shopId: ID!
+  ): Product
+
+  "Query for a list of Products"
+  sellerProducts(
+    "Seller id against which to fetch data"
+    sellerId: ID!
+
+    "Filter by archived"
+    isArchived: Boolean
+
+    "Filter by visibility"
+    isVisible: Boolean
+
+    "Flag to set metafields search method. Default value false, performs a fuzzy search. Explicitly set it to true to perform exact match."
+    isExactMatch: Boolean = false
+
+    "Filter by metafield key using `regex` match. To get specific searches send the argument as a regex pattern"
+    metafieldKey: String
+
+    "Filter by metafield value using `regex` match. To get specific searches send the argument as a regex pattern"
+    metafieldValue: String
+
+    "Filter by price range maximum value"
+    priceMax: Float
+
+    "Filter by price range minimum value"
+    priceMin: Float
+
+    "List of product IDs to filter by"
+    productIds: [ID]
+
+    "Regex metch query string"
+    query: String
+
+    "List of shop IDs to filter by"
+    shopIds: [ID]!
+
+    "List of tag ids to filter by"
+    tagIds: [ID]
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt
+
+    "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
+    offset: Int
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = desc
+
+    "By default, products are sorted by createdAt. Set this to sort by one of the other allowed fields"
+    sortBy: ProductSortByField = createdAt
+  ): ProductConnection
+  
   sellerCatalogItems(
     "Provide a list of shop IDs from which you want to get catalog items"
     sellerIds: [ID]!
