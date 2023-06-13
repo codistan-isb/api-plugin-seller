@@ -9,6 +9,7 @@ import getUserByUserId from "./utils/getUser.js";
 import updateUserAccountBook from "./utils/updateUserAccountBook.js";
 import updateUserFulfillmentMethod from "./utils/updateUserFulfillmentMethod.js";
 import sellerCatalogItems from "./resolvers/Query/catalogItems.js";
+import sellerProducts from "./resolvers/Query/sellerProducts.js";
 import mutations from "./mutations/index.js";
 import queries from "./queries/index.js";
 
@@ -64,9 +65,12 @@ const resolvers = {
   },
   ProductVariant: {
     async ancestorId(parent, args, context, info) {
+      console.log("parent", parent);
       return parent.ancestors[0];
     },
     async parentId(parent, args, context, info) {
+            console.log("parent", parent);
+
       return encodeOpaqueId("reaction/product", parent.ancestors[0]);
       //encode( encodeOpaqueId(parent.ancestors[0]))
     },
@@ -110,6 +114,7 @@ const resolvers = {
       return allUsersResponse;
     },
     sellerCatalogItems,
+    sellerProducts,
   },
   Mutation: {
     updateSellerInfo,
