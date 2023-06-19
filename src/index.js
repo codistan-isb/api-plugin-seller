@@ -12,6 +12,7 @@ import sellerCatalogItems from "./resolvers/Query/catalogItems.js";
 import sellerProducts from "./resolvers/Query/sellerProducts.js";
 import mutations from "./mutations/index.js";
 import queries from "./queries/index.js";
+import getSellerOrders from "./resolvers/Query/getSellerOrders.js";
 
 import updateSellerInfo from "./resolvers/Mutation/updateSellerInfo.js";
 
@@ -69,7 +70,7 @@ const resolvers = {
       return parent.ancestors[0];
     },
     async parentId(parent, args, context, info) {
-            console.log("parent", parent);
+      console.log("parent", parent);
 
       return encodeOpaqueId("reaction/product", parent.ancestors[0]);
       //encode( encodeOpaqueId(parent.ancestors[0]))
@@ -115,6 +116,7 @@ const resolvers = {
     },
     sellerCatalogItems,
     sellerProducts,
+    getSellerOrders,
   },
   Mutation: {
     updateSellerInfo,
