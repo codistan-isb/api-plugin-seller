@@ -110,7 +110,7 @@ type shippingPayload{
 shopId:String
 type:String
 workflow:workflowPayload
-items:itemsPayload
+items:[itemsPayload]
 
 
 }
@@ -135,10 +135,9 @@ type Paymentpayload {
 
 type sellerOrder{
   _id:ID
-
-  sellerId:ID!
+ sellerId:ID!
   accountId:ID
-  cartId:ID
+ cartId:ID
 createdAt: DateTime!
 currencyCode:String
 email:String
