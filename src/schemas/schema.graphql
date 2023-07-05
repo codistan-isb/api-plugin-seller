@@ -80,11 +80,6 @@ type addressPayload {
    phone:String
    postal:String
    region:String
-
-
-
-
-
 }
 enum WorkflowStatus {
   inprogress
@@ -192,9 +187,29 @@ input updateSellerInput {
   bankDetails: bankDetailsInput
   documentDetails: documentsDetailInput
 }
+type SuccessInfo{
+  message:String,
+  success:Boolean,
+}
+input sellerRegistrationInput {
+  _id: ID
+   email:String
+   storeName:String
+   address1:String
+    address2: String
+    state:String
+    city:String
+     country:String
+     postalcode:String
+     phone:String
+     fullName:String
+     password:String
+   }
+  
 extend type Mutation {
   updateAccountpayBookEntry(input: accountBookInput): AccountBook
   updateSellerInfo(input: updateSellerInput): updateSellerInfopayload
+  sellerRegistration(input: sellerRegistrationInput): SuccessInfo
   updateAvailableFulfillmentMethodEntry(
     input: AvailableFulfillmentMethodInput
   ): [AvailableFulfillmentMethod]
