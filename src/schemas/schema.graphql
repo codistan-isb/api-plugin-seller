@@ -15,6 +15,7 @@ type AccountBook {
   isActive: Boolean
 }
 
+
 input AvailableFulfillmentMethodInput {
   AccountId: ID!
   FulfillmentMethodId: ID!
@@ -57,6 +58,96 @@ extend type Account {
   AccountBook: [AccountBook]
   AvailableFulfillmentMethods: [AvailableFulfillmentMethod]
 }
+type datapayload{
+  fullName:String
+  gqlType:String
+}
+type currencyPayload{
+  exchangeRate:Int!
+  userCurrency:String
+
+
+}
+type addressPayload {
+  address1: String
+  address2: String
+  city:String
+  country:String
+  fullName:String
+  isBillingDefault:Boolean
+   isCommercial:Boolean
+   isShippingDefault:Boolean
+   phone:String
+   postal:String
+   region:String
+
+
+
+
+
+}
+enum WorkflowStatus {
+  inprogress
+  completed
+  created
+  cancelled
+  new
+}
+type workflowPayload{
+  status:String
+  workflow: [String!]!
+}
+type itemsPayload{
+  _id:ID
+  title:String
+  subtotal:String
+
+quantity:Int
+}
+type shippingPayload{
+  _id:ID
+  address:addressPayload
+shopId:String
+type:String
+workflow:workflowPayload
+items:[itemsPayload]
+
+
+}
+type Paymentpayload {
+  _id: ID
+  amount: Int
+  data: datapayload
+  displayName: String
+  method: String
+  mode: String
+  name: String
+  paymentPluginName: String
+  processor: String
+  riskLevel: String
+  shopId: String
+  status: String
+  transactionId: String
+  transactions: [Float]!
+  currency: currencyPayload
+
+}
+
+type sellerOrder{
+  _id:ID
+ sellerId:ID!
+  accountId:ID
+ cartId:ID
+createdAt: DateTime!
+currencyCode:String
+email:String
+discounts: [Float]!
+workflow:workflowPayload
+ordererPreferredLanguage:String
+payments:[Paymentpayload]
+shipping:[shippingPayload]
+referenceId:ID
+}
 input bankDetailsInput {
   bankName: String
   bankAcountNumber: String
@@ -82,7 +173,6 @@ type updateSellerInfopayload {
   pickUpAddress: String
   city: String
   contactNumber: String
-
   bankDetails: [bankDetailsPayload]
   documentDetails: [documentsDetailPayload]
 }
@@ -94,7 +184,7 @@ type SellerInfo {
 }
 input updateSellerInput {
   _id: ID
-  profileImage: String
+  image: String
   storeName: String
   pickUpAddress: String
   city: String
@@ -102,7 +192,6 @@ input updateSellerInput {
   bankDetails: bankDetailsInput
   documentDetails: documentsDetailInput
 }
-
 extend type Mutation {
   updateAccountpayBookEntry(input: accountBookInput): AccountBook
   updateSellerInfo(input: updateSellerInput): updateSellerInfopayload
@@ -110,7 +199,6 @@ extend type Mutation {
     input: AvailableFulfillmentMethodInput
   ): [AvailableFulfillmentMethod]
 }
-
 type Query {
   "Query for a single Product"
   sellerProduct(
@@ -220,6 +308,10 @@ type Query {
     "By default, items are sorted by when they were last updated, most recently updated first. Set this to sort by one of the other allowed fields"
     sortBy: CatalogItemSortByField = updatedAt
   ): CatalogItemConnection
+
+
+
+ getSellerOrders( sellerId: ID!  status: WorkflowStatus): [sellerOrder]
 
   getAllSeller(
     limit: Int = 10

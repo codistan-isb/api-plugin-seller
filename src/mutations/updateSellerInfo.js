@@ -7,7 +7,7 @@ export default async function updateSellerInfo(context, input) {
   const { Accounts } = context.collections;
   const {
     _id,
-    profileImage,
+    image,
     storeName,
     pickUpAddress,
     city,
@@ -18,8 +18,8 @@ export default async function updateSellerInfo(context, input) {
 
   const updates = {};
   const updatedFields = [];
-  if (profileImage) {
-    updates["profileImage"] = profileImage;
+  if (image) {
+    updates["storeLogo"] = image;
   }
 
   if (storeName) {
@@ -54,7 +54,7 @@ export default async function updateSellerInfo(context, input) {
   }
   const updatedAccountResp = await Accounts.findOneAndUpdate(
     { _id },
-    { $set: updates }, 
+    { $set: updates },
     { returnOriginal: false }
   );
   return updatedAccountResp.value;
