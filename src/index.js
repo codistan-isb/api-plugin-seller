@@ -13,7 +13,7 @@ import sellerProducts from "./resolvers/Query/sellerProducts.js";
 import mutations from "./mutations/index.js";
 import queries from "./queries/index.js";
 import getSellerOrders from "./resolvers/Query/getSellerOrders.js";
-
+import sellerRegistration from "./resolvers/Mutation/sellerRegistration.js";
 import updateSellerInfo from "./resolvers/Mutation/updateSellerInfo.js";
 
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
@@ -99,6 +99,7 @@ const resolvers = {
       }
     },
   },
+
   Query: {
     async getAllSeller(parent, args, context, info) {
       // if (context.user === undefined || context.user === null) {
@@ -120,6 +121,7 @@ const resolvers = {
   },
   Mutation: {
     updateSellerInfo,
+sellerRegistration,
     async updateAccountpayBookEntry(parent, args, context, info) {
       let updateResponse = await updateUserAccountBook(context, args.input);
       return updateResponse;
