@@ -10,7 +10,6 @@ export default async function sellerRegistration(_, { input }, context) {
   const accountsPassword = injector.get(password_1.AccountsPassword);
   let userId;
 
-  // Check if the user already has a customer account
   const existingCustomer = await Accounts.findOne({
     "emails.0.address": email,
     roles: "customer",
@@ -38,9 +37,12 @@ export default async function sellerRegistration(_, { input }, context) {
   }
 
   // Check if the email already exists in the system
-  const EmailExist = await Accounts.findOne({ "emails.0.address": email });
+  const EmailExist = await Accounts.findOne({
+    "emails.0.address": email,
+    roles: "seller",
+  });
   if (EmailExist) {
-    throw new Error("Email already exists");
+    throw new Error("You Are Already Exists As A Seller");
   }
 
   try {
