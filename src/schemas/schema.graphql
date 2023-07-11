@@ -197,6 +197,7 @@ input sellerRegistrationInput {
    storeName:String
    address1:String
     address2: String
+    
     state:String
     city:String
      country:String
