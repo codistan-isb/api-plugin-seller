@@ -1,8 +1,9 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-export default async function getSellerOrders(_, args, context) {
-  const { sellerId, status } = args;
-  const { collections } = context;
-  const { SubOrders } = collections;
+import getPaginatedResponse from "@reactioncommerce/api-utils/graphql/getPaginatedResponse.js";
+import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
+export default async function getSellerOrders(_, args, context, info) {
+  const { sellerId, status, ...connectionArgs } = args;
+
   if (!context.user) {
     throw new ReactionError("access-denied", "Access Denied");
   }
@@ -12,9 +13,16 @@ export default async function getSellerOrders(_, args, context) {
   }
 
   if (status) {
-    selector["workflow.status"] = status;
+    selector["status"] = status;
   }
 
-  const data = await SubOrders.find(selector).toArray();
-  return data;
+  const query = await context.queries.getSellerOrders(context, selector);
+
+  console.log("query is ", query);
+  //
+  return getPaginatedResponse(query, connectionArgs, {
+    includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
+    includeHasPreviousPage: wasFieldRequested("pageInfo.hasPreviousPage", info),
+    includeTotalCount: wasFieldRequested("totalCount", info),
+  });
 }

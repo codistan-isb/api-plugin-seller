@@ -64,14 +64,16 @@ const filters = new SimpleSchema({
  */
 export default function applyProductFilters(context, productFilters) {
   // if there are filter/params that don't match the schema
-  filters.validate(productFilters);
-  console.log(productFilters, "id");
+  // filters.validate(productFilters);
+  console.log(productFilters, "product filters are");
   // Init default selector - Everyone can see products that fit this selector
   let selector = {
-    ancestors: [], // Lookup top-level products
+    // ancestors: [], // Lookup top-level products
     isDeleted: { $ne: true }, // by default, we don't publish deleted products
     sellerId: productFilters.sellerId,
   };
+
+  console.log("selector is ", selector);
 
   if (productFilters) {
     // filter by productIds
@@ -177,6 +179,12 @@ export default function applyProductFilters(context, productFilters) {
       selector = {
         ...selector,
         isDeleted: productFilters.isArchived,
+      };
+    }
+    if (productFilters.status !== undefined) {
+      selector = {
+        ...selector,
+        "workflow.workflow.0": productFilters.status,
       };
     }
 

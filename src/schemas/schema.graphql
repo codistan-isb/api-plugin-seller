@@ -81,13 +81,7 @@ type addressPayload {
    postal:String
    region:String
 }
-enum WorkflowStatus {
-  inprogress
-  completed
-  created
-  cancelled
-  new
-}
+
 type workflowPayload{
   status:String
   workflow: [String!]!
@@ -128,21 +122,7 @@ type Paymentpayload {
 
 }
 
-type sellerOrder{
-  _id:ID
- sellerId:ID!
-  accountId:ID
- cartId:ID
-createdAt: DateTime!
-currencyCode:String
-email:String
-discounts: [Float]!
-workflow:workflowPayload
-ordererPreferredLanguage:String
-payments:[Paymentpayload]
-shipping:[shippingPayload]
-referenceId:ID
-}
+
 input bankDetailsInput {
   bankName: String
   bankAcountNumber: String
@@ -206,7 +186,52 @@ input sellerRegistrationInput {
      fullName:String
      password:String
    }
-  
+   enum WorkflowStatus {
+     inprogress
+     completed
+     created
+     cancelled
+     new
+   }
+   type sellerOrder {
+     _id: ID
+     sellerId: ID!
+     accountId: ID
+     cartId: ID
+     createdAt: DateTime!
+     currencyCode: String
+     email: String
+     discounts: [Float]!
+     status:WorkflowStatus
+     workflow: workflowPayload
+     ordererPreferredLanguage: String
+     payments: [Paymentpayload]
+     shipping: [shippingPayload]
+     referenceId: ID
+   }
+  type sellerOrderconncection {
+    "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+    edges: [sellerOrderEdge]
+
+    """
+    You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+    if you know you will not need to paginate the results.
+    """
+    nodes: [sellerOrder]
+
+    "Information to help a client request the next or previous page"
+    pageInfo: PageInfo!
+
+    "The total number of nodes that match your query"
+    totalCount: Int!
+  }
+  type sellerOrderEdge {
+    "The cursor that represents this node in the paginated results"
+    cursor: ConnectionCursor!
+
+    "The product"
+    node: sellerOrder
+  }
 extend type Mutation {
   updateAccountpayBookEntry(input: accountBookInput): AccountBook
   updateSellerInfo(input: updateSellerInput): updateSellerInfopayload
@@ -327,7 +352,23 @@ type Query {
 
 
 
- getSellerOrders( sellerId: ID!  status: WorkflowStatus): [sellerOrder]
+ getSellerOrders( sellerId: ID!  status: WorkflowStatus   after: ConnectionCursor
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt
+
+    "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
+    offset: Int
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = desc
+ shopId: ID!):sellerOrderconncection
 
   getAllSeller(
     limit: Int = 10
