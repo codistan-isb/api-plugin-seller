@@ -18,25 +18,29 @@ import applyProductFilters from "../utils/applyProductFilters.js";
  * @param {String[]} [tagIds] - List of tag ids to filter by
  * @returns {Promise<Object>} Products object Promise
  */
-export default async function sellerProducts(context, input) {
+export default async function getSellerOrders(context, input) {
   const { collections } = context;
-  const { Products } = collections;
+
+  const { SubOrders } = collections;
   const productFilters = input;
   // console.log("input ", input);
-  // Check the permissions for all shops requested
-  await Promise.all(
-    productFilters.shopIds.map(async (shopId) => {
-      await context.validatePermissions("reaction:legacy:products", "read", {
-        shopId,
-      });
-    })
-  );
+  //   // Check the permissions for all shops requested
+  //   await Promise.all(
+  //     productFilters.shopId.map(async (shopId) => {
+  //       await context.validatePermissions("reaction:legacy:products", "read", {
+  //         shopId,
+  //       });
+  //     })
+  //   );
+  console.log("seller orders input ", productFilters);
 
   // Create the mongo selector from the filters
   const selector = applyProductFilters(context, productFilters);
 
+  console.log("selector in query is  ", selector);
+
   // Get the first N (limit) top-level products that match the query
-  const ProductData = await Products.find(selector);
-  console.log("ProductData", await Products.find(selector).toArray());
+  const ProductData = await SubOrders.find(selector);
+  console.log("ProductData", await SubOrders.find(selector).toArray());
   return ProductData;
 }
