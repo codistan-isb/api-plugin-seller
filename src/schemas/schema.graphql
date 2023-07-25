@@ -51,12 +51,22 @@ input uploadedByinput {
   image: String
   userId: ID
 }
+type storeInfo{
+  image: String
+  storeName: String
+  pickUpAddress: String
+  city: String
+  contactNumber: String
+  bankDetails: bankDetailsPayload
+  documentDetails: documentsDetailPayload
+}
 extend type Account {
   productVariants: [ProductVariant]
   identityVerified: Boolean
   orderFulfillment: [Order]
   AccountBook: [AccountBook]
   AvailableFulfillmentMethods: [AvailableFulfillmentMethod]
+  storeInfo:storeInfo
 }
 type datapayload{
   fullName:String
@@ -124,12 +134,14 @@ type Paymentpayload {
 
 
 input bankDetailsInput {
+  type:String
   bankName: String
-  bankAcountNumber: String
+  bankAccountNumber: String
 }
 type bankDetailsPayload {
+  type:String
   bankName: String
-  bankAcountNumber: String
+  bankAccountNumber: String
 }
 input documentsDetailInput {
   cnicNumber: String

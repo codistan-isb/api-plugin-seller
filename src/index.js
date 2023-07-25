@@ -26,6 +26,19 @@ const resolvers = {
     },
   },
   Account: {
+    async storeInfo(parent, args, context, info) {
+    
+      let storeInfo ={
+        image: parent.storeLogo,
+        storeName: parent.storeName,
+        pickUpAddress: parent.pickUpAddress,
+        city: parent.city,
+        contactNumber: parent.contactNumber,
+        bankDetails:parent.bankDetail,
+        documentDetails: parent.documentDetails
+      }
+      return storeInfo ;
+    },
     async productVariants(parent, args, context, info) {
       let productVariant = await getVariantsByUserId(
         context,
