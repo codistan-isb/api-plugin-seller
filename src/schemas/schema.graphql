@@ -67,6 +67,7 @@ extend type Account {
   AccountBook: [AccountBook]
   AvailableFulfillmentMethods: [AvailableFulfillmentMethod]
   storeInfo:storeInfo
+  isSeller:Boolean
 }
 type datapayload{
   fullName:String

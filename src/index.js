@@ -26,6 +26,13 @@ const resolvers = {
     },
   },
   Account: {
+    
+    async isSeller(parent, args, context, info) {
+      
+      const isSeller=parent.isSeller||parent.groups.length||parent.roles=="vendor";
+      return isSeller;
+    },
+    
     async storeInfo(parent, args, context, info) {
     
       let storeInfo ={

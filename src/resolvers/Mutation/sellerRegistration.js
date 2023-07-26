@@ -12,11 +12,12 @@ export default async function sellerRegistration(_, { input }, context) {
 
   const existingCustomer = await Accounts.findOne({
     "emails.0.address": email,
-    roles: "customer",
+    roles: { $ne: "vendor" } 
   });
+  let groupId;
+  const getGroup = await Groups.findOne({ name: "seller" });
   if (existingCustomer) {
-    let groupId;
-    const getGroup = await Groups.findOne({ name: "seller" });
+
     console.log("getGroup ", getGroup);
     if (getGroup) {
       groupId = getGroup._id;
@@ -24,11 +25,11 @@ export default async function sellerRegistration(_, { input }, context) {
       groupId = null;
     }
 
-    console.log("input is ", input);
     // Update the existing customer account to become a seller
+
     await Accounts.updateOne(
       { _id: existingCustomer._id },
-      { $set: { roles: "seller", groups: [groupId] } }
+      { $set: { roles: "vendor", groups: [groupId], isSeller:true } }
     );
     return {
       message: "Account updated to seller",
@@ -39,10 +40,10 @@ export default async function sellerRegistration(_, { input }, context) {
   // Check if the email already exists in the system
   const EmailExist = await Accounts.findOne({
     "emails.0.address": email,
-    roles: "seller",
+    roles: "vendor",
   });
   if (EmailExist) {
-    throw new Error("You Are Already Exists As A Seller");
+    throw new Error("You are Already A Seller");
   }
 
   try {
@@ -83,7 +84,8 @@ export default async function sellerRegistration(_, { input }, context) {
         address2: input.phone,
         postalcode: input.postalcode,
       },
-      roles: ["seller"],
+      groups: [groupId],
+      roles: "vendor",
       phoneNumber: input.phone,
     };
     const accountAdded = await Accounts.insertOne(account);
