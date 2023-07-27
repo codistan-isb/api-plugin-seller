@@ -29,7 +29,7 @@ const resolvers = {
     
     async isSeller(parent, args, context, info) {
       
-      const isSeller=parent.isSeller||parent.groups.length||parent.roles=="vendor";
+      const isSeller=parent?.isSeller||parent?.groups?.length||parent?.roles=="vendor";
       return isSeller;
     },
     
