@@ -78,6 +78,7 @@ export default async function sellerRegistration(_, { input }, context) {
         firstName: input.fullName,
         phone: input.phone,
       },
+      isSeller:true ,
       state: input.state,
       storeName: input.storeName,
       storeAddress: {
