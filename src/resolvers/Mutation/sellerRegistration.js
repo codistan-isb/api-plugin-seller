@@ -16,15 +16,16 @@ export default async function sellerRegistration(_, { input }, context) {
   });
   let groupId;
   const getGroup = await Groups.findOne({ name: "seller" });
+  if (getGroup) {
+    groupId = getGroup._id;
+  } else {
+    groupId = null;
+  }
+
   if (existingCustomer) {
 
     console.log("getGroup ", getGroup);
-    if (getGroup) {
-      groupId = getGroup._id;
-    } else {
-      groupId = null;
-    }
-
+  
     // Update the existing customer account to become a seller
 
     await Accounts.updateOne(
