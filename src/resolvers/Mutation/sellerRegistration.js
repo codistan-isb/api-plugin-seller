@@ -62,6 +62,8 @@ export default async function sellerRegistration(_, { input }, context) {
 
   if (userId) {
     const account = {
+      _id:userId,
+      userId,
       acceptsMarketing: false,
       emails: [
         {
