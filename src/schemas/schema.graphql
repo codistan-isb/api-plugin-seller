@@ -15,6 +15,27 @@ type AccountBook {
   isActive: Boolean
 }
 
+type SellerDiscounts implements Node {
+  _id: ID!
+  code: String!
+  isValid: Boolean
+  description: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+enum SellerDiscountType {
+  COMMISSION
+}
+
+input SellerDiscountCodeInput {
+  code: String!
+  isValid: Boolean
+  description: String
+  "value in percentage"
+  value: Float!
+  type: SellerDiscountType!
+}
 
 input AvailableFulfillmentMethodInput {
   AccountId: ID!
@@ -47,11 +68,11 @@ type uploadedBy {
 }
 input uploadedByinput {
   name: String
-  storeName:String,
+  storeName: String
   image: String
   userId: ID
 }
-type storeInfo{
+type storeInfo {
   image: String
   storeName: String
   pickUpAddress: String
@@ -66,53 +87,49 @@ extend type Account {
   orderFulfillment: [Order]
   AccountBook: [AccountBook]
   AvailableFulfillmentMethods: [AvailableFulfillmentMethod]
-  storeInfo:storeInfo
-  isSeller:Boolean
+  storeInfo: storeInfo
+  isSeller: Boolean
 }
-type datapayload{
-  fullName:String
-  gqlType:String
+type datapayload {
+  fullName: String
+  gqlType: String
 }
-type currencyPayload{
-  exchangeRate:Int!
-  userCurrency:String
-
-
+type currencyPayload {
+  exchangeRate: Int!
+  userCurrency: String
 }
 type addressPayload {
   address1: String
   address2: String
-  city:String
-  country:String
-  fullName:String
-  isBillingDefault:Boolean
-   isCommercial:Boolean
-   isShippingDefault:Boolean
-   phone:String
-   postal:String
-   region:String
+  city: String
+  country: String
+  fullName: String
+  isBillingDefault: Boolean
+  isCommercial: Boolean
+  isShippingDefault: Boolean
+  phone: String
+  postal: String
+  region: String
 }
 
-type workflowPayload{
-  status:String
+type workflowPayload {
+  status: String
   workflow: [String!]!
 }
-type itemsPayload{
-  _id:ID
-  title:String
-  subtotal:String
+type itemsPayload {
+  _id: ID
+  title: String
+  subtotal: String
 
-quantity:Int
+  quantity: Int
 }
-type shippingPayload{
-  _id:ID
-  address:addressPayload
-shopId:String
-type:String
-workflow:workflowPayload
-items:[itemsPayload]
-
-
+type shippingPayload {
+  _id: ID
+  address: addressPayload
+  shopId: String
+  type: String
+  workflow: workflowPayload
+  items: [itemsPayload]
 }
 type Paymentpayload {
   _id: ID
@@ -130,17 +147,15 @@ type Paymentpayload {
   transactionId: String
   transactions: [Float]!
   currency: currencyPayload
-
 }
 
-
 input bankDetailsInput {
-  type:String
+  type: String
   bankName: String
   bankAccountNumber: String
 }
 type bankDetailsPayload {
-  type:String
+  type: String
   bankName: String
   bankAccountNumber: String
 }
@@ -180,71 +195,72 @@ input updateSellerInput {
   bankDetails: bankDetailsInput
   documentDetails: documentsDetailInput
 }
-type SuccessInfo{
-  message:String,
-  success:Boolean,
+type SuccessInfo {
+  message: String
+  success: Boolean
 }
 input sellerRegistrationInput {
   _id: ID
-   email:String
-   storeName:String
-   address1:String
-    address2: String
-    
-    state:String
-    city:String
-     country:String
-     postalcode:String
-     phone:String
-     fullName:String
-     password:String
-   }
-   enum WorkflowStatus {
-     inprogress
-     completed
-     created
-     cancelled
-     new
-   }
-   type sellerOrder {
-     _id: ID
-     sellerId: ID!
-     accountId: ID
-     cartId: ID
-     createdAt: DateTime!
-     currencyCode: String
-     email: String
-     discounts: [Float]!
-     status:WorkflowStatus
-     workflow: workflowPayload
-     ordererPreferredLanguage: String
-     payments: [Paymentpayload]
-     shipping: [shippingPayload]
-     referenceId: ID
-   }
-  type sellerOrderconncection {
-    "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
-    edges: [sellerOrderEdge]
+  email: String
+  storeName: String
+  address1: String
+  address2: String
+  state: String
+  city: String
+  country: String
+  postalcode: String
+  phone: String
+  fullName: String
+  password: String
+  sellerDiscountCode: String
+  discountCode: String
+}
+enum WorkflowStatus {
+  inprogress
+  completed
+  created
+  cancelled
+  new
+}
+type sellerOrder {
+  _id: ID
+  sellerId: ID!
+  accountId: ID
+  cartId: ID
+  createdAt: DateTime!
+  currencyCode: String
+  email: String
+  discounts: [Float]!
+  status: WorkflowStatus
+  workflow: workflowPayload
+  ordererPreferredLanguage: String
+  payments: [Paymentpayload]
+  shipping: [shippingPayload]
+  referenceId: ID
+}
+type sellerOrderconncection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+  edges: [sellerOrderEdge]
 
-    """
-    You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
-    if you know you will not need to paginate the results.
-    """
-    nodes: [sellerOrder]
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
+  nodes: [sellerOrder]
 
-    "Information to help a client request the next or previous page"
-    pageInfo: PageInfo!
+  "Information to help a client request the next or previous page"
+  pageInfo: PageInfo!
 
-    "The total number of nodes that match your query"
-    totalCount: Int!
-  }
-  type sellerOrderEdge {
-    "The cursor that represents this node in the paginated results"
-    cursor: ConnectionCursor!
+  "The total number of nodes that match your query"
+  totalCount: Int!
+}
+type sellerOrderEdge {
+  "The cursor that represents this node in the paginated results"
+  cursor: ConnectionCursor!
 
-    "The product"
-    node: sellerOrder
-  }
+  "The product"
+  node: sellerOrder
+}
 extend type Mutation {
   updateAccountpayBookEntry(input: accountBookInput): AccountBook
   updateSellerInfo(input: updateSellerInput): updateSellerInfopayload
@@ -252,6 +268,8 @@ extend type Mutation {
   updateAvailableFulfillmentMethodEntry(
     input: AvailableFulfillmentMethodInput
   ): [AvailableFulfillmentMethod]
+
+  createSellerDiscountCode(input: SellerDiscountCodeInput): Boolean
 }
 type Query {
   "Query for a single Product"
@@ -324,7 +342,7 @@ type Query {
     "By default, products are sorted by createdAt. Set this to sort by one of the other allowed fields"
     sortBy: ProductSortByField = createdAt
   ): ProductConnection
-  
+
   sellerCatalogItems(
     "Provide a list of shop IDs from which you want to get catalog items"
     sellerIds: [ID]!
@@ -363,9 +381,10 @@ type Query {
     sortBy: CatalogItemSortByField = updatedAt
   ): CatalogItemConnection
 
-
-
- getSellerOrders( sellerId: ID!  status: WorkflowStatus   after: ConnectionCursor
+  getSellerOrders(
+    sellerId: ID!
+    status: WorkflowStatus
+    after: ConnectionCursor
 
     "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
     before: ConnectionCursor
@@ -381,7 +400,8 @@ type Query {
 
     "Return results sorted in this order"
     sortOrder: SortOrder = desc
- shopId: ID!):sellerOrderconncection
+    shopId: ID!
+  ): sellerOrderconncection
 
   getAllSeller(
     limit: Int = 10

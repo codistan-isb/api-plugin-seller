@@ -12,7 +12,7 @@ export default async function updateSellerInfo(context, input) {
     pickUpAddress,
     city,
     contactNumber,
-    bankDetails: { bankName, bankAccountNumber,type },
+    bankDetails: { bankName, bankAccountNumber, type },
     documentDetails: { cnicNumber, cnicImageFront, cnicImageBack },
   } = input;
 
@@ -36,7 +36,7 @@ export default async function updateSellerInfo(context, input) {
   }
   if (type) {
     const bankDetail = {
-      type:type,
+      type: type,
       bankName: bankName,
       bankAccountNumber: bankAccountNumber,
     };

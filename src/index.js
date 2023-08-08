@@ -15,6 +15,7 @@ import queries from "./queries/index.js";
 import getSellerOrders from "./resolvers/Query/getSellerOrders.js";
 import sellerRegistration from "./resolvers/Mutation/sellerRegistration.js";
 import updateSellerInfo from "./resolvers/Mutation/updateSellerInfo.js";
+import createSellerDiscountCode from "./resolvers/Mutation/createSellerDiscountCode.js";
 
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 // import updateSellerinfo from "./mutations/updateSellerinfo";
@@ -26,25 +27,23 @@ const resolvers = {
     },
   },
   Account: {
-    
     async isSeller(parent, args, context, info) {
-      
-      const isSeller=parent?.isSeller||parent?.groups?.length||parent?.roles=="vendor";
+      const isSeller =
+        parent?.isSeller || parent?.groups?.length || parent?.roles == "vendor";
       return isSeller;
     },
-    
+
     async storeInfo(parent, args, context, info) {
-    
-      let storeInfo ={
+      let storeInfo = {
         image: parent.storeLogo,
         storeName: parent.storeName,
         pickUpAddress: parent.pickUpAddress,
         city: parent.city,
         contactNumber: parent.contactNumber,
-        bankDetails:parent.bankDetail,
-        documentDetails: parent.documentDetails
-      }
-      return storeInfo ;
+        bankDetails: parent.bankDetail,
+        documentDetails: parent.documentDetails,
+      };
+      return storeInfo;
     },
     async productVariants(parent, args, context, info) {
       let productVariant = await getVariantsByUserId(
@@ -140,8 +139,9 @@ const resolvers = {
     getSellerOrders,
   },
   Mutation: {
+    createSellerDiscountCode,
     updateSellerInfo,
-sellerRegistration,
+    sellerRegistration,
     async updateAccountpayBookEntry(parent, args, context, info) {
       let updateResponse = await updateUserAccountBook(context, args.input);
       return updateResponse;
@@ -242,7 +242,11 @@ export default async function register(app) {
       startup: [myStartup1],
       publishProductToCatalog: [myPublishProductToCatalog],
     },
-
+    collections: {
+      SellerDiscounts: {
+        name: "SellerDiscounts",
+      },
+    },
     graphQL: {
       schemas,
       // schemas: [mySchema],
