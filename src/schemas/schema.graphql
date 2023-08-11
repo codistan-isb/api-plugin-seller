@@ -266,9 +266,16 @@ type meta {
   field: String
 }
 
+enum EventNameEnum {
+  SCANNED
+  ANDROID
+  IOS
+  WEB
+}
+
 input AnalyticsInput {
   "Api Plugin Seller"
-  eventName: String!
+  eventName: EventNameEnum!
   metafields: [MetafieldInput]
 }
 
