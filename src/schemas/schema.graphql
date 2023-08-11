@@ -212,7 +212,6 @@ input sellerRegistrationInput {
   phone: String
   fullName: String
   password: String
-  sellerDiscountCode: String
   discountCode: String
 }
 enum WorkflowStatus {
