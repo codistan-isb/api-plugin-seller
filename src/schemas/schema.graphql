@@ -214,6 +214,7 @@ input sellerRegistrationInput {
   password: String
   discountCode: String
 }
+
 enum WorkflowStatus {
   inprogress
   completed
@@ -260,6 +261,17 @@ type sellerOrderEdge {
   "The product"
   node: sellerOrder
 }
+
+type meta {
+  field: String
+}
+
+input AnalyticsInput {
+  "Api Plugin Seller"
+  eventName: String!
+  metafields: [MetafieldInput]
+}
+
 extend type Mutation {
   updateAccountpayBookEntry(input: accountBookInput): AccountBook
   updateSellerInfo(input: updateSellerInput): updateSellerInfopayload
@@ -269,6 +281,7 @@ extend type Mutation {
   ): [AvailableFulfillmentMethod]
 
   createSellerDiscountCode(input: SellerDiscountCodeInput): Boolean
+  createAnalytics(input: AnalyticsInput!): Boolean
 }
 type Query {
   "Query for a single Product"

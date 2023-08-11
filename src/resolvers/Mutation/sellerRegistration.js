@@ -17,7 +17,7 @@ export default async function sellerRegistration(_, { input }, context) {
   const { email, discountCode } = input;
   const { injector, infos, collections } = context;
 
-  if (discountCode !== null || discountCode !== "") {
+  if (discountCode) {
     await validateDiscountCode(context, discountCode);
   }
 
