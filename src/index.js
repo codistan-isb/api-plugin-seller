@@ -16,6 +16,7 @@ import getSellerOrders from "./resolvers/Query/getSellerOrders.js";
 import sellerRegistration from "./resolvers/Mutation/sellerRegistration.js";
 import updateSellerInfo from "./resolvers/Mutation/updateSellerInfo.js";
 import createSellerDiscountCode from "./resolvers/Mutation/createSellerDiscountCode.js";
+import createAnalytics from "./resolvers/Mutation/createAnalytics.js";
 
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 // import updateSellerinfo from "./mutations/updateSellerinfo";
@@ -140,8 +141,10 @@ const resolvers = {
   },
   Mutation: {
     createSellerDiscountCode,
+    createAnalytics,
     updateSellerInfo,
     sellerRegistration,
+
     async updateAccountpayBookEntry(parent, args, context, info) {
       let updateResponse = await updateUserAccountBook(context, args.input);
       return updateResponse;
@@ -245,6 +248,9 @@ export default async function register(app) {
     collections: {
       SellerDiscounts: {
         name: "SellerDiscounts",
+      },
+      Analytics: {
+        name: "Analytics",
       },
     },
     graphQL: {

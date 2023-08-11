@@ -1,8 +1,10 @@
 import updateSellerInfo from "./updateSellerInfo.js";
 import sellerRegistration from "./sellerRegistration.js";
 import createSellerDiscountCode from "./createSellerDiscountCode.js";
+import createAnalytics from "./createAnalytics.js";
 export default {
   updateSellerInfo,
   sellerRegistration,
   createSellerDiscountCode,
+  createAnalytics,
 };
