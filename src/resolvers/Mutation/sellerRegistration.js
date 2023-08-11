@@ -1,10 +1,25 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import password_1 from "@accounts/password";
 import server_1 from "@accounts/server";
+
+async function validateDiscountCode(context, code) {
+  const { SellerDiscounts } = context.collections;
+
+  const discountCode = await SellerDiscounts.findOne({
+    code,
+  });
+
+  if (!discountCode) throw new Error("Invalid Discount Code");
+}
+
 export default async function sellerRegistration(_, { input }, context) {
   const { Accounts, Groups } = context.collections;
-  const { email } = input;
+  const { email, discountCode } = input;
   const { injector, infos, collections } = context;
+
+  if (discountCode !== null || discountCode !== "") {
+    await validateDiscountCode(context, discountCode);
+  }
 
   const accountsServer = injector.get(server_1.AccountsServer);
   const accountsPassword = injector.get(password_1.AccountsPassword);
@@ -12,7 +27,7 @@ export default async function sellerRegistration(_, { input }, context) {
 
   const existingCustomer = await Accounts.findOne({
     "emails.0.address": email,
-    roles: { $ne: "vendor" } 
+    roles: { $ne: "vendor" },
   });
   let groupId;
   const getGroup = await Groups.findOne({ name: "seller" });
@@ -23,14 +38,20 @@ export default async function sellerRegistration(_, { input }, context) {
   }
 
   if (existingCustomer) {
-
     console.log("getGroup ", getGroup);
-  
+
     // Update the existing customer account to become a seller
 
     await Accounts.updateOne(
       { _id: existingCustomer._id },
-      { $set: { roles: "vendor", groups: [groupId], isSeller:true } }
+      {
+        $set: {
+          roles: "vendor",
+          groups: [groupId],
+          isSeller: true,
+          discountCode,
+        },
+      }
     );
     return {
       message: "Account updated to seller",
@@ -63,9 +84,10 @@ export default async function sellerRegistration(_, { input }, context) {
 
   if (userId) {
     const account = {
-      _id:userId,
+      _id: userId,
       userId,
       acceptsMarketing: false,
+
       emails: [
         {
           address: input.email,
@@ -78,7 +100,7 @@ export default async function sellerRegistration(_, { input }, context) {
         firstName: input.fullName,
         phone: input.phone,
       },
-      isSeller:true ,
+      isSeller: true,
       state: input.state,
       storeName: input.storeName,
       storeAddress: {
@@ -91,6 +113,7 @@ export default async function sellerRegistration(_, { input }, context) {
       groups: [groupId],
       roles: "vendor",
       phoneNumber: input.phone,
+      discountCode,
     };
     const accountAdded = await Accounts.insertOne(account);
     return {
