@@ -17,11 +17,17 @@ import sellerRegistration from "./resolvers/Mutation/sellerRegistration.js";
 import updateSellerInfo from "./resolvers/Mutation/updateSellerInfo.js";
 import createSellerDiscountCode from "./resolvers/Mutation/createSellerDiscountCode.js";
 import createAnalytics from "./resolvers/Mutation/createAnalytics.js";
-
+import getAllStore from "./resolvers/Query/getAllStore.js";
+import getAllBrands from "./resolvers/Query/getAllBrands.js";
+import createBrands from "./resolvers/Mutation/createBrands.js";
+import updateBrands from "./resolvers/Mutation/updateBrands.js";
+import removeBrands from "./resolvers/Mutation/removeBrands.js";
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
+import updateBrandPayload from "./resolvers/updateBrandPayload.js";
 // import updateSellerinfo from "./mutations/updateSellerinfo";
 var _context = null;
 const resolvers = {
+  updateBrandPayload,
   SellerInfo: {
     picture(parent, args, context, info) {
       return parent?.profile?.picture;
@@ -138,12 +144,17 @@ const resolvers = {
     sellerCatalogItems,
     sellerProducts,
     getSellerOrders,
+    getAllStore,
+    getAllBrands,
   },
   Mutation: {
     createSellerDiscountCode,
     createAnalytics,
     updateSellerInfo,
     sellerRegistration,
+    createBrands,
+    updateBrands,
+    removeBrands,
 
     async updateAccountpayBookEntry(parent, args, context, info) {
       let updateResponse = await updateUserAccountBook(context, args.input);
@@ -248,6 +259,9 @@ export default async function register(app) {
     collections: {
       SellerDiscounts: {
         name: "SellerDiscounts",
+      },
+      SellerBrands: {
+        name: "SellerBrands",
       },
       Analytics: {
         name: "Analytics",
