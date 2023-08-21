@@ -16,6 +16,7 @@ export default async function sellerRegistration(_, { input }, context) {
   const { Accounts, Groups } = context.collections;
   const { email, discountCode } = input;
   const { injector, infos, collections } = context;
+  console.log("input in sellerRegistration", input);
 
   if (discountCode) {
     await validateDiscountCode(context, discountCode);

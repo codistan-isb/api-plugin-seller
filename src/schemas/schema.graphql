@@ -52,7 +52,7 @@ type createBrandPayload {
   _id: ID
   brandName: String
   brandCategory: String
-  brandProduct: [Product]
+  # brandProduct: [Product]
 }
 
 input updateBrandInput {
@@ -221,7 +221,24 @@ type SellerInfo {
   name: String
   storeName: String
   picture: String
+  phone: String
+  address: String
+  vendorProducts: [Product]
 }
+
+type SellerInfoConnection {
+  edges: [SellerInfoEdge]
+  nodes: [SellerInfo]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type SellerInfoEdge {
+  cursor: ConnectionCursor!
+  node: SellerInfo
+}
+
+
 input updateSellerInput {
   _id: ID
   image: String
