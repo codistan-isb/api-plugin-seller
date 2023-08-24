@@ -267,6 +267,8 @@ input sellerRegistrationInput {
   fullName: String
   password: String
   discountCode: String
+  image: String
+
 }
 
 enum WorkflowStatus {

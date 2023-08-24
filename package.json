@@ -1,7 +1,7 @@
 {
   "name": "@codistan-isb/api-plugin-seller",
   "description": "Boilerplate Example plugin for the Reaction API",
-  "version": "2.11.4",
+  "version": "2.11.5",
   "main": "index.js",
   "type": "module",
   "engines": {

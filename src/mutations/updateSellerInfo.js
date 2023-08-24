@@ -53,6 +53,7 @@ export default async function updateSellerInfo(context, input) {
     updates["documentDetails"] = documentDetails;
     updatedFields.push("documentDetails");
   }
+  console.log("updates", updates);
   const updatedAccountResp = await Accounts.findOneAndUpdate(
     { _id },
     { $set: updates },
