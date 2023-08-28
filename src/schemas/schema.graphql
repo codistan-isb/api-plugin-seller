@@ -43,6 +43,43 @@ input AvailableFulfillmentMethodInput {
   status: Boolean!
 }
 
+input BrandInput {
+  _id: ID
+  brandName: String
+  brandCategory: String
+}
+type createBrandPayload {
+  _id: ID
+  brandName: String
+  brandCategory: String
+  # brandProduct: [Product]
+}
+
+input updateBrandInput {
+
+  brandName: String
+  brandCategory: String
+}
+type updateBrandPayload {
+  _id:ID
+  brandName: String
+  brandCategory: String
+  brandProduct: [Product]
+}
+
+type updateBrandConnection {
+  edges: [updateBrandEdge]
+  nodes: [updateBrandPayload]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+type updateBrandEdge {
+  cursor: ConnectionCursor!
+  node: updateBrandPayload
+}
+
+
+
 scalar AvailableFulfillmentMethod
 
 extend type ProductVariant {
@@ -184,7 +221,24 @@ type SellerInfo {
   name: String
   storeName: String
   picture: String
+  phone: String
+  address: String
+  vendorProducts: [Product]
 }
+
+type SellerInfoConnection {
+  edges: [SellerInfoEdge]
+  nodes: [SellerInfo]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type SellerInfoEdge {
+  cursor: ConnectionCursor!
+  node: SellerInfo
+}
+
+
 input updateSellerInput {
   _id: ID
   image: String
@@ -213,6 +267,8 @@ input sellerRegistrationInput {
   fullName: String
   password: String
   discountCode: String
+  image: String
+
 }
 
 enum WorkflowStatus {
@@ -238,6 +294,54 @@ type sellerOrder {
   shipping: [shippingPayload]
   referenceId: ID
 }
+
+enum SortByField {
+  _id
+  createdAt
+  updatedAt
+}
+
+type Store implements Node {
+  _id: ID!
+  storeName: String
+  shopId: ID
+  storeLogo: String
+  createdAt: String
+  updatedAt: String
+
+}
+
+
+# type Brand implements Node {
+#   _id: ID!
+#   brandName: String
+#   brandCategory: String
+
+# }
+type StoreConnection {
+  edges: [StoreEdge]
+  nodes: [Store]
+  pageInfo: PageInfo!
+  totalCount: Int!
+
+
+}
+# type BrandConnection {
+#   edges: [BrandEdge]
+#   nodes: [Brand]
+#   pageInfo: PageInfo!
+#   totalCount: Int!
+# }
+
+type StoreEdge {
+  cursor: ConnectionCursor!
+  node: Store
+}
+# type BrandEdge {
+#   cursor: ConnectionCursor!
+#   node: Brand
+# }
+
 type sellerOrderconncection {
   "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
   edges: [sellerOrderEdge]
@@ -289,6 +393,9 @@ extend type Mutation {
 
   createSellerDiscountCode(input: SellerDiscountCodeInput): Boolean
   createAnalytics(input: AnalyticsInput!): Boolean
+  createBrands(input: BrandInput): createBrandPayload
+  updateBrands(_id: ID!,input:BrandInput): updateBrandPayload
+  removeBrands(_id: ID!): Boolean
 }
 type Query {
   "Query for a single Product"
@@ -427,4 +534,27 @@ type Query {
     offset: Int = 0
     searchQuery: String
   ): [SellerInfo]
+
+  getAllStore(
+    
+    after: ConnectionCursor
+    first: ConnectionLimitInt
+    last: ConnectionLimitInt
+    before: ConnectionCursor
+    sortOrder: SortOrder = desc
+    offset: Int
+    sortBy: SortByField = createdAt
+    searchQuery: String
+  ): StoreConnection!
+
+  getAllBrands(
+    after: ConnectionCursor
+    first: ConnectionLimitInt
+    last: ConnectionLimitInt
+    before: ConnectionCursor
+    sortOrder: SortOrder = desc
+    offset: Int
+    sortBy: SortByField = createdAt
+    searchQuery: String
+  ): updateBrandConnection!
 }

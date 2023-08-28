@@ -16,6 +16,7 @@ export default async function sellerRegistration(_, { input }, context) {
   const { Accounts, Groups } = context.collections;
   const { email, discountCode } = input;
   const { injector, infos, collections } = context;
+  console.log("input in sellerRegistration", input);
 
   if (discountCode) {
     await validateDiscountCode(context, discountCode);
@@ -50,6 +51,8 @@ export default async function sellerRegistration(_, { input }, context) {
           groups: [groupId],
           isSeller: true,
           discountCode,
+          image: input.image,
+          pickUpAddress: input.address1,
         },
       }
     );
@@ -112,10 +115,14 @@ export default async function sellerRegistration(_, { input }, context) {
       },
       groups: [groupId],
       roles: "vendor",
-      phoneNumber: input.phone,
+      contactNumber: input.phone,
       discountCode,
+      image: input.image,
+      pickUpAddress: input.address1,
+
     };
     const accountAdded = await Accounts.insertOne(account);
+    console.log("accountAdded", accountAdded);
     return {
       message: "Seller created successfully",
       success: true,

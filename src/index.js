@@ -17,16 +17,26 @@ import sellerRegistration from "./resolvers/Mutation/sellerRegistration.js";
 import updateSellerInfo from "./resolvers/Mutation/updateSellerInfo.js";
 import createSellerDiscountCode from "./resolvers/Mutation/createSellerDiscountCode.js";
 import createAnalytics from "./resolvers/Mutation/createAnalytics.js";
-
+import getAllStore from "./resolvers/Query/getAllStore.js";
+import getAllBrands from "./resolvers/Query/getAllBrands.js";
+import createBrands from "./resolvers/Mutation/createBrands.js";
+import updateBrands from "./resolvers/Mutation/updateBrands.js";
+import removeBrands from "./resolvers/Mutation/removeBrands.js";
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
+import updateBrandPayload from "./resolvers/updateBrandPayload.js";
+import SellerInfo from "./resolvers/SellerInfo.js";
 // import updateSellerinfo from "./mutations/updateSellerinfo";
 var _context = null;
 const resolvers = {
-  SellerInfo: {
-    picture(parent, args, context, info) {
-      return parent?.profile?.picture;
-    },
-  },
+  updateBrandPayload,
+  SellerInfo,
+  // SellerInfo: {
+  //   picture(parent, args, context, info) {
+
+  //     return parent?.profile?.picture;
+  //     // console.log("parent", parent);
+  //   },
+  // },
   Account: {
     async isSeller(parent, args, context, info) {
       const isSeller =
@@ -121,29 +131,51 @@ const resolvers = {
   },
 
   Query: {
+       
     async getAllSeller(parent, args, context, info) {
-      // if (context.user === undefined || context.user === null) {
-      //   throw new Error("Unauthorized access. Please login first");
-      // }
-      const { Accounts } = context.collections;
-      let { offset, limit } = args;
-
-      const allUsersResponse = await Accounts.find({ roles: "vendor" })
+      const { Accounts, Products } = context.collections;
+      let { offset, limit, searchQuery } = args;
+    
+      const filter = { roles: "vendor" };
+    
+      const allUsersResponse = await Accounts.find(filter)
         .skip(offset)
         .limit(limit)
         .toArray();
-
-      return allUsersResponse;
+    
+      let sellersWithProducts = allUsersResponse;
+      
+      if (searchQuery) {
+        sellersWithProducts = sellersWithProducts.filter(
+          (user) => user.billing.city.match(new RegExp(searchQuery, "i"))
+        );
+      }
+    
+      const sellerIdsWithProducts = await Products.distinct("sellerId");
+      sellersWithProducts = sellersWithProducts.filter((user) =>
+        sellerIdsWithProducts.includes(user._id.toString())
+      );
+    
+      return sellersWithProducts;
     },
+    
+    
+
+
     sellerCatalogItems,
     sellerProducts,
     getSellerOrders,
+    getAllStore,
+    getAllBrands,
   },
   Mutation: {
     createSellerDiscountCode,
     createAnalytics,
     updateSellerInfo,
     sellerRegistration,
+    createBrands,
+    updateBrands,
+    removeBrands,
 
     async updateAccountpayBookEntry(parent, args, context, info) {
       let updateResponse = await updateUserAccountBook(context, args.input);
@@ -248,6 +280,9 @@ export default async function register(app) {
     collections: {
       SellerDiscounts: {
         name: "SellerDiscounts",
+      },
+      SellerBrands: {
+        name: "SellerBrands",
       },
       Analytics: {
         name: "Analytics",

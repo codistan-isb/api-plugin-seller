@@ -9,7 +9,8 @@ import sellerProduct from "./sellerProduct.js";
 import sellerProducts from "./sellerProducts.js";
 // import getSellerOrders from "./sellle.js";
 import getSellerOrders from "./getSellerOrders.js";
-
+import stores from "./stores.js";
+import brands from "./brands.js";
 export default {
   sellercatalogItems,
   catalogItemsAggregate,
@@ -21,4 +22,6 @@ export default {
   findProductAndVariant,
   findVariantInCatalogProduct,
   vendors,
+  stores,
+  brands
 };
