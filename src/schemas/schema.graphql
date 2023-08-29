@@ -190,11 +190,13 @@ input bankDetailsInput {
   type: String
   bankName: String
   bankAccountNumber: String
+  bankAccountTitle: String
 }
 type bankDetailsPayload {
   type: String
   bankName: String
   bankAccountNumber: String
+  bankAccountTitle: String
 }
 input documentsDetailInput {
   cnicNumber: String
@@ -213,8 +215,8 @@ type updateSellerInfopayload {
   pickUpAddress: String
   city: String
   contactNumber: String
-  bankDetails: [bankDetailsPayload]
-  documentDetails: [documentsDetailPayload]
+  bankDetails: bankDetailsPayload
+  documentDetails: documentsDetailPayload
 }
 type SellerInfo {
   _id: ID
@@ -248,6 +250,7 @@ input updateSellerInput {
   contactNumber: String
   bankDetails: bankDetailsInput
   documentDetails: documentsDetailInput
+  
 }
 type SuccessInfo {
   message: String
