@@ -53,6 +53,7 @@ export default async function sellerRegistration(_, { input }, context) {
           discountCode,
           image: input.image,
           pickUpAddress: input.address1,
+          isDeleted: false,
         },
       }
     );
@@ -90,7 +91,7 @@ export default async function sellerRegistration(_, { input }, context) {
       _id: userId,
       userId,
       acceptsMarketing: false,
-
+      isDeleted: false,
       emails: [
         {
           address: input.email,
@@ -119,7 +120,6 @@ export default async function sellerRegistration(_, { input }, context) {
       discountCode,
       image: input.image,
       pickUpAddress: input.address1,
-
     };
     const accountAdded = await Accounts.insertOne(account);
     console.log("accountAdded", accountAdded);

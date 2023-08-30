@@ -131,36 +131,56 @@ const resolvers = {
   },
 
   Query: {
-       
     async getAllSeller(parent, args, context, info) {
       const { Accounts, Products } = context.collections;
       let { offset, limit, searchQuery } = args;
-    
+
       const filter = { roles: "vendor" };
-    
+
       const allUsersResponse = await Accounts.find(filter)
         .skip(offset)
         .limit(limit)
         .toArray();
-    
+      console.log("allUsersResponse",allUsersResponse)
+      const allUsersLength = allUsersResponse.length;
+      console.log("Number of users:", allUsersLength);
       let sellersWithProducts = allUsersResponse;
-      
+
       if (searchQuery) {
-        sellersWithProducts = sellersWithProducts.filter(
-          (user) => user.billing.city.match(new RegExp(searchQuery, "i"))
+        const cityVariations = [
+          "ISB",
+          "isb",
+          "RWP",
+          "Rwp",
+          "Isb",
+          "Rawalpindi",
+          "rawalpindi",
+          "rwp",
+          "ISLAMABAD",
+          "islamabad",
+          "Islamabad",
+        ];
+
+        const regexPattern = cityVariations
+          .map((city) => city.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+          .join("|");
+        const regex = new RegExp(`\\b(${regexPattern})\\b`, "i");
+
+        sellersWithProducts = sellersWithProducts.filter((user) =>
+          user.billing.city.match(regex)
         );
       }
-    
+
+      console.log("sellersWithProducts", sellersWithProducts.length);
+      console.log("sellersWithProducts", sellersWithProducts);
+
       const sellerIdsWithProducts = await Products.distinct("sellerId");
       sellersWithProducts = sellersWithProducts.filter((user) =>
         sellerIdsWithProducts.includes(user._id.toString())
       );
-    
+
       return sellersWithProducts;
     },
-    
-    
-
 
     sellerCatalogItems,
     sellerProducts,
