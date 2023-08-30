@@ -4,7 +4,7 @@ export default async function updateSellerInfo(context, input) {
   if (!context.user) {
     throw new ReactionError("access-denied", "Access Denied");
   }
-  const { Accounts } = context.collections;
+  const { Accounts, Products } = context.collections;
   const {
     _id,
     image,
@@ -12,7 +12,7 @@ export default async function updateSellerInfo(context, input) {
     pickUpAddress,
     city,
     contactNumber,
-    bankDetails: { bankName, bankAccountNumber, type , bankAccountTitle},
+    bankDetails: { bankName, bankAccountNumber, type, bankAccountTitle },
     documentDetails: { cnicNumber, cnicImageFront, cnicImageBack },
   } = input;
 
@@ -39,12 +39,12 @@ export default async function updateSellerInfo(context, input) {
       type: type,
       bankName: bankName,
       bankAccountNumber: bankAccountNumber,
-      bankAccountTitle: bankAccountTitle
+      bankAccountTitle: bankAccountTitle,
     };
     updates["bankDetails"] = bankDetails;
     updatedFields.push("bankDetails");
   }
-  console.log("bankDetail", updates.bankDetails)
+  console.log("bankDetail", updates.bankDetails);
 
   if (cnicNumber) {
     const documentDetails = {
@@ -55,12 +55,12 @@ export default async function updateSellerInfo(context, input) {
     updates["documentDetails"] = documentDetails;
     updatedFields.push("documentDetails");
   }
-  console.log("updates", updates);
+  // console.log("updates", updates);
   const updatedAccountResp = await Accounts.findOneAndUpdate(
     { _id },
     { $set: updates },
     { returnOriginal: false }
   );
-  console.log("updatedAccountResp", updatedAccountResp.value);
+  // console.log("updatedAccountResp", updatedAccountResp.value);
   return updatedAccountResp.value;
 }
