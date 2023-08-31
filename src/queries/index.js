@@ -11,6 +11,7 @@ import sellerProducts from "./sellerProducts.js";
 import getSellerOrders from "./getSellerOrders.js";
 import stores from "./stores.js";
 import brands from "./brands.js";
+import discount from "./discount.js";
 export default {
   sellercatalogItems,
   catalogItemsAggregate,
@@ -23,5 +24,6 @@ export default {
   findVariantInCatalogProduct,
   vendors,
   stores,
-  brands
+  brands,
+  discount
 };

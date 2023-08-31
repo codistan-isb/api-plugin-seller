@@ -56,12 +56,11 @@ type createBrandPayload {
 }
 
 input updateBrandInput {
-
   brandName: String
   brandCategory: String
 }
 type updateBrandPayload {
-  _id:ID
+  _id: ID
   brandName: String
   brandCategory: String
   brandProduct: [Product]
@@ -77,8 +76,6 @@ type updateBrandEdge {
   cursor: ConnectionCursor!
   node: updateBrandPayload
 }
-
-
 
 scalar AvailableFulfillmentMethod
 
@@ -240,7 +237,6 @@ type SellerInfoEdge {
   node: SellerInfo
 }
 
-
 input updateSellerInput {
   _id: ID
   image: String
@@ -250,7 +246,6 @@ input updateSellerInput {
   contactNumber: String
   bankDetails: bankDetailsInput
   documentDetails: documentsDetailInput
-  
 }
 type SuccessInfo {
   message: String
@@ -271,7 +266,6 @@ input sellerRegistrationInput {
   password: String
   discountCode: String
   image: String
-
 }
 
 enum WorkflowStatus {
@@ -311,9 +305,7 @@ type Store implements Node {
   storeLogo: String
   createdAt: String
   updatedAt: String
-
 }
-
 
 # type Brand implements Node {
 #   _id: ID!
@@ -326,8 +318,6 @@ type StoreConnection {
   nodes: [Store]
   pageInfo: PageInfo!
   totalCount: Int!
-
-
 }
 # type BrandConnection {
 #   edges: [BrandEdge]
@@ -385,6 +375,14 @@ input AnalyticsInput {
   eventName: EventNameEnum!
   metafields: [MetafieldInput]
 }
+input CheckAccountInput {
+  "The user ID, which is used to check the account is deleted or not"
+  userId: ID
+}
+type discountConnection {
+  name: String
+  totalCount: Int
+}
 
 extend type Mutation {
   updateAccountpayBookEntry(input: accountBookInput): AccountBook
@@ -397,8 +395,9 @@ extend type Mutation {
   createSellerDiscountCode(input: SellerDiscountCodeInput): Boolean
   createAnalytics(input: AnalyticsInput!): Boolean
   createBrands(input: BrandInput): createBrandPayload
-  updateBrands(_id: ID!,input:BrandInput): updateBrandPayload
+  updateBrands(_id: ID!, input: BrandInput): updateBrandPayload
   removeBrands(_id: ID!): Boolean
+  deleteAccount(input: CheckAccountInput!): Boolean
 }
 type Query {
   "Query for a single Product"
@@ -539,7 +538,6 @@ type Query {
   ): [SellerInfo]
 
   getAllStore(
-    
     after: ConnectionCursor
     first: ConnectionLimitInt
     last: ConnectionLimitInt
@@ -560,4 +558,5 @@ type Query {
     sortBy: SortByField = createdAt
     searchQuery: String
   ): updateBrandConnection!
+  discount: [discountConnection]
 }
