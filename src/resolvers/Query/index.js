@@ -6,7 +6,9 @@ import sellerProducts from "./sellerProducts.js";
 import getVariants from "../../utils/getVariants.js";
 import getSellerOrders from "./getSellerOrders.js";
 import getAllStore from "./getAllStore.js";
-import brands from "./brands.js";
+import getTags from "./getTags.js";
+// import getAllBrands from "./getAllBrands.js";
+import discount from "./discount.js";
 export default {
   sellerCatalogItems,
   catalogItemProduct,
@@ -14,8 +16,10 @@ export default {
   sellerProduct,
   getSellerOrders,
   sellerProducts,
-  brands,
-  getAllStore
+  // getAllBrands,
+  getAllStore,
+  discount,
+  getTags
   // variants: (node, args, context) =>{
   //   console.log("Node ",node)
   //  return getVariants(context, node._id, true, args)},

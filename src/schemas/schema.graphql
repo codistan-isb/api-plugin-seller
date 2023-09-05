@@ -56,12 +56,11 @@ type createBrandPayload {
 }
 
 input updateBrandInput {
-
   brandName: String
   brandCategory: String
 }
 type updateBrandPayload {
-  _id:ID
+  _id: ID
   brandName: String
   brandCategory: String
   brandProduct: [Product]
@@ -77,8 +76,6 @@ type updateBrandEdge {
   cursor: ConnectionCursor!
   node: updateBrandPayload
 }
-
-
 
 scalar AvailableFulfillmentMethod
 
@@ -240,7 +237,6 @@ type SellerInfoEdge {
   node: SellerInfo
 }
 
-
 input updateSellerInput {
   _id: ID
   image: String
@@ -250,7 +246,6 @@ input updateSellerInput {
   contactNumber: String
   bankDetails: bankDetailsInput
   documentDetails: documentsDetailInput
-  
 }
 type SuccessInfo {
   message: String
@@ -271,7 +266,6 @@ input sellerRegistrationInput {
   password: String
   discountCode: String
   image: String
-
 }
 
 enum WorkflowStatus {
@@ -311,9 +305,7 @@ type Store implements Node {
   storeLogo: String
   createdAt: String
   updatedAt: String
-
 }
-
 
 # type Brand implements Node {
 #   _id: ID!
@@ -326,8 +318,6 @@ type StoreConnection {
   nodes: [Store]
   pageInfo: PageInfo!
   totalCount: Int!
-
-
 }
 # type BrandConnection {
 #   edges: [BrandEdge]
@@ -385,6 +375,95 @@ input AnalyticsInput {
   eventName: EventNameEnum!
   metafields: [MetafieldInput]
 }
+input CheckAccountInput {
+  "The user ID, which is used to check the account is deleted or not"
+  userId: ID
+}
+type discountConnection {
+  name: String
+  totalCount: Int
+}
+
+extend type Tag {
+  "A paged list of tags that have this tag as their parent in the tag hierarchy. Currently only three levels are supported."
+  subTags(
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
+    offset: Int,
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = asc,
+
+    "By default, tags are sorted by position. Set this to sort by one of the other allowed fields"
+    sortBy: TagSortByField = position
+  ): TagConnection
+}
+
+"The fields by which you are allowed to sort any query that returns a `TagConnection`"
+enum TagSortByField {
+  "Tag ID"
+  _id
+
+  "Date and time the tag was created"
+  createdAt
+
+  "Tag name"
+  name
+
+  "Tag position"
+  position
+
+  "Date and time the tag was last updated"
+  updatedAt
+}
+
+"A connection edge in which each node is a `Tag` object"
+type TagEdge implements NodeEdge {
+  "The cursor that represents this node in the paginated results"
+  cursor: ConnectionCursor!
+
+  "The tag"
+  node: Tag
+}
+
+"""
+Wraps a list of `Tags`, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
+type TagConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+  edges: [TagEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
+  nodes: [Tag]
+
+  "Information to help a client request the next or previous page"
+  pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
+  totalCount: Int!
+}
+
+
+
 
 extend type Mutation {
   updateAccountpayBookEntry(input: accountBookInput): AccountBook
@@ -397,10 +476,11 @@ extend type Mutation {
   createSellerDiscountCode(input: SellerDiscountCodeInput): Boolean
   createAnalytics(input: AnalyticsInput!): Boolean
   createBrands(input: BrandInput): createBrandPayload
-  updateBrands(_id: ID!,input:BrandInput): updateBrandPayload
+  updateBrands(_id: ID!, input: BrandInput): updateBrandPayload
   removeBrands(_id: ID!): Boolean
+  deleteAccount(input: CheckAccountInput!): Boolean
 }
-type Query {
+extend type Query {
   "Query for a single Product"
   sellerProduct(
     sellerId: ID!
@@ -539,7 +619,6 @@ type Query {
   ): [SellerInfo]
 
   getAllStore(
-    
     after: ConnectionCursor
     first: ConnectionLimitInt
     last: ConnectionLimitInt
@@ -560,4 +639,47 @@ type Query {
     sortBy: SortByField = createdAt
     searchQuery: String
   ): updateBrandConnection!
+  discount: [discountConnection]
+  getTags(
+    "Only tags associated with this shop will be returned"
+    shopId: ID!,
+
+    "If provided, this query will do a regex search using the provided filter data, and return only tags that match"
+    # filter: String
+
+    filterations:[String]
+
+    "Tags to exclude from results"
+    excludedTagIds: [ID]
+
+    "If set, the query will return only top-level tags or only non-top-level tags. By default, both types of tags are returned."
+    isTopLevel: Boolean,
+
+    "Set to true if you want soft deleted tags to be included in the response"
+    shouldIncludeDeleted: Boolean = false,
+
+    "Set to true if you want to include tags that have isVisible set to false"
+    shouldIncludeInvisible: Boolean = false,
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
+    offset: Int,
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = asc,
+
+    "By default, tags are sorted by position. Set this to sort by one of the other allowed fields"
+    sortBy: TagSortByField = position
+  ): TagConnection
 }

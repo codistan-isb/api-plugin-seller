@@ -25,6 +25,7 @@ import removeBrands from "./resolvers/Mutation/removeBrands.js";
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import updateBrandPayload from "./resolvers/updateBrandPayload.js";
 import SellerInfo from "./resolvers/SellerInfo.js";
+import getTags from "./resolvers/Query/getTags.js";
 // import updateSellerinfo from "./mutations/updateSellerinfo";
 var _context = null;
 const resolvers = {
@@ -187,6 +188,7 @@ const resolvers = {
     getSellerOrders,
     getAllStore,
     getAllBrands,
+    getTags,
   },
   Mutation: {
     createSellerDiscountCode,
@@ -315,5 +317,5 @@ export default async function register(app) {
     },
     queries,
     mutations,
-  });
+      });
 }
