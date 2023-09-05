@@ -12,7 +12,7 @@ import getSellerOrders from "./getSellerOrders.js";
 import stores from "./stores.js";
 import brands from "./brands.js";
 import discount from "./discount.js";
-import getTags from "./getTags.js";
+
 export default {
   sellercatalogItems,
   catalogItemsAggregate,
@@ -27,5 +27,5 @@ export default {
   stores,
   brands,
   discount,
-  getTags
+
 };
