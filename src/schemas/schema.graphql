@@ -620,5 +620,5 @@ extend type Mutation {
     offset: Int
     sortBy: SortByField = createdAt
     searchQuery: String
-  ):SellerInformationConnection
+  ):AccountConnection!
 }
