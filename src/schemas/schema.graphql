@@ -215,8 +215,8 @@ type updateSellerInfopayload {
   bankDetails: bankDetailsPayload
   documentDetails: documentsDetailPayload
 }
-type SellerInfo {
-  _id: ID
+type SellerInfo implements Node{
+  _id: ID!
   name: String
   storeName: String
   picture: String
@@ -236,6 +236,32 @@ type SellerInfoEdge {
   cursor: ConnectionCursor!
   node: SellerInfo
 }
+
+
+#Information for the Sellers to be displayed on the Seller Dashboard
+
+type SellerInformation implements Node{
+  _id: ID!
+  name: String
+  storeName: String
+  picture: String
+  phone: String
+  address: String
+  
+}
+
+type SellerInformationConnection {
+  edges: [SellerInformationEdge]
+  nodes: [SellerInformation]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type SellerInformationEdge {
+  cursor: ConnectionCursor!
+  node: SellerInformation
+}
+
 
 input updateSellerInput {
   _id: ID
@@ -564,5 +590,35 @@ extend type Mutation {
     searchQuery: String
   ): updateBrandConnection!
   discount: [discountConnection]
+  getAllReferalCodeSeller(
+    after: ConnectionCursor
+    first: ConnectionLimitInt
+    last: ConnectionLimitInt
+    before: ConnectionCursor
+    sortOrder: SortOrder = desc
+    offset: Int
+    sortBy: SortByField = createdAt
+    searchQuery: String
+  ): SellerInfoConnection!
+  getAllReferalCodeCustomer(
+    after: ConnectionCursor
+    first: ConnectionLimitInt
+    last: ConnectionLimitInt
+    before: ConnectionCursor
+    sortOrder: SortOrder = desc
+    offset: Int
+    sortBy: SortByField = createdAt
+    searchQuery: String
+):OrderConnection!
 
+  getAllNewSeller(
+    after: ConnectionCursor
+    first: ConnectionLimitInt
+    last: ConnectionLimitInt
+    before: ConnectionCursor
+    sortOrder: SortOrder = desc
+    offset: Int
+    sortBy: SortByField = createdAt
+    searchQuery: String
+  ):SellerInformationConnection
 }
