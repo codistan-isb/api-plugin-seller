@@ -75,6 +75,8 @@ export default async function sellerRegistration(_, { input }, context) {
   }
 
   try {
+    input.createdAt = new Date();
+    input.updatedAt = new Date();
     userId = await accountsPassword.createUser(input);
   } catch (error) {
     if (
@@ -87,6 +89,7 @@ export default async function sellerRegistration(_, { input }, context) {
     }
     throw error;
   }
+
 
   if (userId) {
     const account = {
@@ -101,7 +104,8 @@ export default async function sellerRegistration(_, { input }, context) {
           provides: "default",
         },
       ],
-      name: null,
+      name: input.fullName ,
+      
       profile: {
         firstName: input.fullName,
         phone: input.phone,
