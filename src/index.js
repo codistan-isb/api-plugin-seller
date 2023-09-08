@@ -25,12 +25,17 @@ import removeBrands from "./resolvers/Mutation/removeBrands.js";
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 import updateBrandPayload from "./resolvers/updateBrandPayload.js";
 import SellerInfo from "./resolvers/SellerInfo.js";
-import getTags from "./resolvers/Query/getTags.js";
+import getAllReferalCodeSeller from "./resolvers/Query/getAllReferalCodeSeller.js";
+import getAllReferalCodeCustomer from "./resolvers/Query/getAllReferalCodeCustomer.js";
+import getAllNewSeller from "./resolvers/Query/getAllNewSeller.js";
+import SellerInformation from "./resolvers/SellerInformation.js";
+
 // import updateSellerinfo from "./mutations/updateSellerinfo";
 var _context = null;
 const resolvers = {
   updateBrandPayload,
   SellerInfo,
+  SellerInformation,
   // SellerInfo: {
   //   picture(parent, args, context, info) {
 
@@ -188,7 +193,10 @@ const resolvers = {
     getSellerOrders,
     getAllStore,
     getAllBrands,
-    getTags,
+    getAllReferalCodeSeller,
+    getAllReferalCodeCustomer,
+    getAllNewSeller
+   
   },
   Mutation: {
     createSellerDiscountCode,
