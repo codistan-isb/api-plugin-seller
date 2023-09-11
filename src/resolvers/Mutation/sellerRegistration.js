@@ -14,7 +14,11 @@ async function validateDiscountCode(context, code) {
 
 export default async function sellerRegistration(_, { input }, context) {
   const { Accounts, Groups } = context.collections;
-  const { email, discountCode } = input;
+  const {
+    email,
+    discountCode,
+    bankDetail: { bankName, bankAccountNumber, type, bankAccountTitle },
+  } = input;
   const { injector, infos, collections } = context;
   console.log("input in sellerRegistration", input);
 
@@ -54,8 +58,13 @@ export default async function sellerRegistration(_, { input }, context) {
           image: input.image,
           pickUpAddress: input.address1,
           isDeleted: false,
-         
-      updatedAt: new Date(),
+          bankDetail: {
+            bankName,
+            bankAccountNumber,
+            type,
+            bankAccountTitle,
+          },
+          updatedAt: new Date(),
         },
       }
     );
@@ -90,7 +99,6 @@ export default async function sellerRegistration(_, { input }, context) {
     throw error;
   }
 
-
   if (userId) {
     const account = {
       _id: userId,
@@ -104,8 +112,8 @@ export default async function sellerRegistration(_, { input }, context) {
           provides: "default",
         },
       ],
-      name: input.fullName ,
-      
+      name: input.fullName,
+
       profile: {
         firstName: input.fullName,
         phone: input.phone,
@@ -128,6 +136,12 @@ export default async function sellerRegistration(_, { input }, context) {
       pickUpAddress: input.address1,
       createdAt: new Date(),
       updatedAt: new Date(),
+      bankDetail: {
+        bankName,
+        bankAccountNumber,
+        type,
+        bankAccountTitle,
+      },
     };
     const accountAdded = await Accounts.insertOne(account);
     console.log("accountAdded", accountAdded);

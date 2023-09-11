@@ -51,13 +51,14 @@ const resolvers = {
     },
 
     async storeInfo(parent, args, context, info) {
+      console.log("parent in storeInfo", parent);
       let storeInfo = {
         image: parent.storeLogo,
         storeName: parent.storeName,
         pickUpAddress: parent.pickUpAddress,
         city: parent.city,
         contactNumber: parent.contactNumber,
-        bankDetails: parent.bankDetail,
+        bankDetail: parent.bankDetail,
         documentDetails: parent.documentDetails,
       };
       return storeInfo;
