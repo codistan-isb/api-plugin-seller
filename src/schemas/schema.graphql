@@ -613,5 +613,6 @@ type Query {
     offset: Int
     sortBy: SortByField = createdAt
     searchQuery: String
+    tagsId: String
   ): AccountConnection!
 }
