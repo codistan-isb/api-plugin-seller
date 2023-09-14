@@ -46,23 +46,23 @@ input AvailableFulfillmentMethodInput {
 input BrandInput {
   _id: ID
   brandName: String
-  brandCategory: String
+  brandCategory: [String]
 }
 type createBrandPayload {
   _id: ID
   brandName: String
-  brandCategory: String
+  brandCategory: [String]
   # brandProduct: [Product]
 }
 
 input updateBrandInput {
   brandName: String
-  brandCategory: String
+  brandCategory: [String]
 }
 type updateBrandPayload {
   _id: ID
   brandName: String
-  brandCategory: String
+  brandCategory: [String]
   brandProduct: [Product]
 }
 
@@ -407,7 +407,13 @@ type discountConnection {
   name: String
   totalCount: Int
 }
-
+extend type Account {
+  products:[  Product]
+}
+type getAllNewSellerPayload{
+  AccountDetail:[Account]
+  totalPage:Int
+}
 extend type Mutation {
   updateAccountpayBookEntry(input: accountBookInput): AccountBook
   updateSellerInfo(input: updateSellerInput): updateSellerInfopayload
@@ -605,14 +611,16 @@ type Query {
   ): OrderConnection!
 
   getAllNewSeller(
-    after: ConnectionCursor
-    first: ConnectionLimitInt
-    last: ConnectionLimitInt
-    before: ConnectionCursor
-    sortOrder: SortOrder = desc
-    offset: Int
-    sortBy: SortByField = createdAt
-    searchQuery: String
+    # after: ConnectionCursor
+    # first: ConnectionLimitInt
+    # last: ConnectionLimitInt
+    # before: ConnectionCursor
+    # sortOrder: SortOrder = desc
+    # offset: Int
+    # sortBy: SortByField = createdAt
+    # searchQuery: String
+    PageNumber: Int
+    itemPerPage: Int
     tagsId: String
-  ): AccountConnection!
+  ):getAllNewSellerPayload
 }

@@ -8,11 +8,11 @@ export default async function getAllNewSeller(
 ){
     const { searchQuery, ...connectionArgs } = args;
     const sellerInfo = await context.queries.getAllNewSeller(context, args);
+  return sellerInfo;
   
-  
-    return getPaginatedResponse(sellerInfo, connectionArgs, {
-      includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
-      includeHasPreviousPage: wasFieldRequested("pageInfo.hasPreviousPage", info),
-      includeTotalCount: wasFieldRequested("totalCount", info),
-    });
+    // return getPaginatedResponse(sellerInfo, connectionArgs, {
+    //   includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
+    //   includeHasPreviousPage: wasFieldRequested("pageInfo.hasPreviousPage", info),
+    //   includeTotalCount: wasFieldRequested("totalCount", info),
+    // });
 }

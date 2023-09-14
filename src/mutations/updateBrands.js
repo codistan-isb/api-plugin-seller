@@ -16,19 +16,29 @@ export default async function updateBrands(context, args) {
       query.brandCategory = brandCategory;
     }
     console.log("query", query);
-    const options = { new: false };
+    console.log("filter", filter);
+
+    const options = { new: true };
 
     const updatedBrand = await SellerBrands.findOneAndUpdate(
       filter,
       { $set: query },
-      options
-    );
 
-    console.log("Update result:", updatedBrand.value);
+      {
+        returnOriginal: false,
+      }
+    );
+    
+    console.log("Update result:", updatedBrand);
     return updatedBrand.value;
+    
     // return null
   } catch (error) {
     console.error("Error updating brand:", error);
-    throw error;
+    // throw error;
+
+
+
+    
   }
 }
