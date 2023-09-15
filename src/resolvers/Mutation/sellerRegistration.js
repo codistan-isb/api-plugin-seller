@@ -17,7 +17,7 @@ export default async function sellerRegistration(_, { input }, context) {
   const {
     email,
     discountCode,
-    bankDetail: { bankName, bankAccountNumber, type, bankAccountTitle },
+    bankDetail,
   } = input;
   const { injector, infos, collections } = context;
   console.log("input in sellerRegistration", input);
@@ -25,6 +25,14 @@ export default async function sellerRegistration(_, { input }, context) {
   if (discountCode) {
     await validateDiscountCode(context, discountCode);
   }
+  
+  let bankName, bankAccountNumber, type, bankAccountTitle;
+
+  // Check if bankDetail exists before destructuring its properties
+  if (bankDetail) {
+    ({ bankName, bankAccountNumber, type, bankAccountTitle } = bankDetail);
+  }
+  console.log("bankDetail", bankDetail);
 
   const accountsServer = injector.get(server_1.AccountsServer);
   const accountsPassword = injector.get(password_1.AccountsPassword);
@@ -143,6 +151,7 @@ export default async function sellerRegistration(_, { input }, context) {
         bankAccountTitle,
       },
     };
+    console.log("account", account);
     const accountAdded = await Accounts.insertOne(account);
     console.log("accountAdded", accountAdded);
     return {
