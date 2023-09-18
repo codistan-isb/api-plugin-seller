@@ -12,10 +12,13 @@ export default async function updateSellerInfo(context, input) {
     pickUpAddress,
     city,
     contactNumber,
-    bankDetail: { bankName, bankAccountNumber, type, bankAccountTitle },
+    bankDetail,
     documentDetails: { cnicNumber, cnicImageFront, cnicImageBack },
   } = input;
-
+  
+  if (bankDetail) {
+    ({ bankName, bankAccountNumber, type, bankAccountTitle } = bankDetail);
+  }
   const updates = {};
   const updatedFields = [];
   if (image) {

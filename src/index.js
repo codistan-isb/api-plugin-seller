@@ -56,7 +56,7 @@ const resolvers = {
         image: parent.storeLogo,
         storeName: parent.storeName,
         pickUpAddress: parent.pickUpAddress,
-        city: parent.city,
+        city: parent.storeAddress.city,
         contactNumber: parent.contactNumber,
         bankDetail: parent.bankDetail,
         documentDetails: parent.documentDetails,
