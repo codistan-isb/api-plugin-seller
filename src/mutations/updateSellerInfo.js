@@ -16,9 +16,9 @@ export default async function updateSellerInfo(context, input) {
     documentDetails: { cnicNumber, cnicImageFront, cnicImageBack },
   } = input;
   
-  if (bankDetail) {
-    ({ bankName, bankAccountNumber, type, bankAccountTitle } = bankDetail);
-  }
+// if(bankDetail){
+//   input["bankDetail"] = bankDetail;
+// }
   const updates = {};
   const updatedFields = [];
   if (image) {
@@ -37,13 +37,7 @@ export default async function updateSellerInfo(context, input) {
   if (contactNumber) {
     updates["contactNumber"] = contactNumber;
   }
-  if (type) {
-    const bankDetail = {
-      type: type,
-      bankName: bankName,
-      bankAccountNumber: bankAccountNumber,
-      bankAccountTitle: bankAccountTitle,
-    };
+  if (bankDetail) {
     updates["bankDetail"] = bankDetail;
     updatedFields.push("bankDetail");
   }
