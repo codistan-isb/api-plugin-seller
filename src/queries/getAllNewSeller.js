@@ -47,6 +47,7 @@ export default async function getAllNewSeller(context, args) {
           products: { $ne: [] },
         },
       },
+      { $unwind: "$products" },
       {
         $sort: {
           createdAt: -1,
@@ -72,9 +73,9 @@ export default async function getAllNewSeller(context, args) {
       { $limit: itemsPerPage }
     );
 
-    const sellersWithProducts = await Accounts.aggregate(pipeline).toArray();
+    const sellersWithProducts = await Accounts.aggregate(pipeline, { allowDiskUse: true }).toArray();
 
-    // console.log("sellersWithProducts");
+    console.log("sellersWithProducts",sellersWithProducts);
 
     // return sellersWithProducts;
     return {

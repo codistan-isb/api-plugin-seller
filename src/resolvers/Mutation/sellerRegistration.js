@@ -34,6 +34,7 @@ export default async function sellerRegistration(_, { input }, context) {
   }
   console.log("bankDetail", bankDetail);
 
+
   const accountsServer = injector.get(server_1.AccountsServer);
   const accountsPassword = injector.get(password_1.AccountsPassword);
   let userId;
@@ -55,14 +56,25 @@ export default async function sellerRegistration(_, { input }, context) {
 
     // Update the existing customer account to become a seller
 
-    await Accounts.updateOne(
+    const accounts = await Accounts.updateOne(
       { _id: existingCustomer._id },
       {
         $set: {
           roles: "vendor",
           groups: [groupId],
           isSeller: true,
-          discountCode,
+          state: input.state,
+          name: input.fullName,
+          storeName: input.storeName,
+          storeAddress: {
+            address1: input.address2,
+            city: input.city,
+            country: input.country,
+            address2: input.phone,
+            postalcode: input.postalcode,
+          },
+          contactNumber: input.phone,
+          discountCode: input.discountCode,
           image: input.image,
           pickUpAddress: input.address1,
           isDeleted: false,
@@ -76,6 +88,7 @@ export default async function sellerRegistration(_, { input }, context) {
         },
       }
     );
+    console.log("Updated accounts", accounts);
     return {
       message: "Account updated to seller",
       success: true,
@@ -139,7 +152,7 @@ export default async function sellerRegistration(_, { input }, context) {
       groups: [groupId],
       roles: "vendor",
       contactNumber: input.phone,
-      discountCode,
+      discountCode: input.discountCode,
       image: input.image,
       pickUpAddress: input.address1,
       createdAt: new Date(),
