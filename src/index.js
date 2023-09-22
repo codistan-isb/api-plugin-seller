@@ -29,6 +29,7 @@ import getAllReferalCodeSeller from "./resolvers/Query/getAllReferalCodeSeller.j
 import getAllReferalCodeCustomer from "./resolvers/Query/getAllReferalCodeCustomer.js";
 import getAllNewSeller from "./resolvers/Query/getAllNewSeller.js";
 import SellerInformation from "./resolvers/SellerInformation.js";
+import discount from "./resolvers/Query/discount.js";
 
 // import updateSellerinfo from "./mutations/updateSellerinfo";
 var _context = null;
@@ -196,7 +197,8 @@ const resolvers = {
     getAllBrands,
     getAllReferalCodeSeller,
     getAllReferalCodeCustomer,
-    getAllNewSeller
+    getAllNewSeller,
+    discount
    
   },
   Mutation: {
