@@ -23,7 +23,11 @@ export default async function sellercatalogItems(context, { searchQuery, sellerI
   const query = {
     "product.isDeleted": { $ne: true },
     ...catalogBooleanFilters,
-    "product.isVisible": true
+    "product.isVisible": true,
+    "product.media": {
+      $elemMatch: {
+        "URLs": { $exists: true, $ne: null, $ne: "" },
+      },},
   };
 
   if (sellerIds) {

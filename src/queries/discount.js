@@ -5,7 +5,7 @@ export default async function discount(parent, args, context, info) {
     const count = await Accounts.aggregate([
         {
             $match: {
-                discountCode: { $nin: [null, ""] } // Filter out documents with null discountCode
+                discountCode: { $nin: [null, ""] } 
             }
         },
         {
