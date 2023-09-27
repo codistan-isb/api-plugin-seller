@@ -26,7 +26,7 @@ export default async function sellercatalogItems(context, { searchQuery, sellerI
     "product.isVisible": true,
     "product.media": {
       $elemMatch: {
-        "URLs": { $exists: true, $ne: null, $ne: "" },
+        "URLs": { $exists: true, $ne: null, $ne: "" , $ne: {} },
       },},
   };
 

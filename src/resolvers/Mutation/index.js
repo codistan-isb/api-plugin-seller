@@ -14,5 +14,5 @@ export default {
   createBrands,
   updateBrands,
   removeBrands,
-  deleteAccount
+  deleteAccount,
 };
