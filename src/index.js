@@ -31,6 +31,7 @@ import getAllNewSeller from "./resolvers/Query/getAllNewSeller.js";
 import SellerInformation from "./resolvers/SellerInformation.js";
 import discount from "./resolvers/Query/discount.js";
 
+
 // import updateSellerinfo from "./mutations/updateSellerinfo";
 var _context = null;
 const resolvers = {
@@ -198,7 +199,8 @@ const resolvers = {
     getAllReferalCodeSeller,
     getAllReferalCodeCustomer,
     getAllNewSeller,
-    discount
+    discount,
+   
    
   },
   Mutation: {
