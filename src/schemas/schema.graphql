@@ -408,11 +408,18 @@ type discountConnection {
   totalCount: Int
 }
 extend type Account {
-  products:[  Product]
+  products: [Product]
 }
-type getAllNewSellerPayload{
-  AccountDetail:[Account]
-  totalPage:Int
+type getAllNewSellerPayload {
+  AccountDetail: [Account]
+  totalPage: Int
+}
+type allFeaturedStoreResponse {
+  storeName: String
+  storeImageUrl: String
+  storeSlug: String
+  storeId: String
+  storeProductId: [String]
 }
 extend type Mutation {
   updateAccountpayBookEntry(input: accountBookInput): AccountBook
@@ -430,6 +437,8 @@ extend type Mutation {
   deleteAccount(input: CheckAccountInput!): Boolean
 }
 type Query {
+  # getAllFeaturedStores(limit: Int = 5): allFeaturedStoreResponse
+
   "Query for a single Product"
   sellerProduct(
     sellerId: ID!
@@ -622,5 +631,5 @@ type Query {
     PageNumber: Int
     itemPerPage: Int
     tagsId: String
-  ):getAllNewSellerPayload
+  ): getAllNewSellerPayload
 }

@@ -13,11 +13,20 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {String[]} [params.tags] - Tag IDs to include (OR)
  * @returns {Promise<MongoCursor>} - A MongoDB cursor for the proper query
  */
-export default async function sellercatalogItems(context, { searchQuery, sellerIds, tagIds, catalogBooleanFilters } = {}) {
+export default async function sellercatalogItems(
+  context,
+  { searchQuery, sellerIds, tagIds, catalogBooleanFilters } = {}
+) {
   const { collections } = context;
   const { Catalog } = collections;
-  if ((!sellerIds || sellerIds.length === 0) && (!tagIds || tagIds.length === 0)) {
-    throw new ReactionError("invalid-param", "You must provide tagIds or sellerIds or both");
+  if (
+    (!sellerIds || sellerIds.length === 0) &&
+    (!tagIds || tagIds.length === 0)
+  ) {
+    throw new ReactionError(
+      "invalid-param",
+      "You must provide tagIds or sellerIds or both"
+    );
   }
 
   const query = {
@@ -26,8 +35,31 @@ export default async function sellercatalogItems(context, { searchQuery, sellerI
     "product.isVisible": true,
     "product.media": {
       $elemMatch: {
-        "URLs": { $exists: true, $ne: null, $ne: "" , $ne: {} },
-      },},
+        URLs: { $exists: true, $ne: null, $ne: "", $ne: {} },
+      },
+    },
+    $and: [
+      {
+        "product.media.URLs.large": {
+          $not: { $regex: /public\/bizb-\d+\/\/.*/ },
+        },
+      },
+      {
+        "product.media.URLs.medium": {
+          $not: { $regex: /public\/bizb-\d+\/\/.*/ },
+        },
+      },
+      {
+        "product.media.URLs.small": {
+          $not: { $regex: /public\/bizb-\d+\/\/.*/ },
+        },
+      },
+      {
+        "product.media.URLs.original": {
+          $not: { $regex: /public\/bizb-\d+\/\/.*/ },
+        },
+      },
+    ],
   };
 
   if (sellerIds) {
@@ -37,7 +69,7 @@ export default async function sellercatalogItems(context, { searchQuery, sellerI
 
   if (searchQuery) {
     query.$text = {
-      $search: _.escapeRegExp(searchQuery)
+      $search: _.escapeRegExp(searchQuery),
     };
   }
 

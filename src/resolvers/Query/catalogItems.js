@@ -80,7 +80,7 @@ export default async function sellerCatalogItems(_, args, context, info) {
     sellerIds,
     tagIds
   });
-console.log("eueuerur",query)
+// console.log("eueuerur",query)
   return getPaginatedResponse(query, connectionArgs, {
     includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
     includeHasPreviousPage: wasFieldRequested("pageInfo.hasPreviousPage", info),
