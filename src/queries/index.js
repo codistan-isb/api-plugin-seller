@@ -12,9 +12,10 @@ import getSellerOrders from "./getSellerOrders.js";
 import stores from "./stores.js";
 import brands from "./brands.js";
 import discount from "./discount.js";
-import  getAllReferalCodeSeller  from "./getAllReferalCodeSeller.js";
+import getAllReferalCodeSeller from "./getAllReferalCodeSeller.js";
 import getAllReferalCodeCustomer from "./getAllReferalCodeCustomer.js";
 import getAllNewSeller from "./getAllNewSeller.js";
+import getAllFeaturedStores from "./getAllFeaturedStores.js";
 
 export default {
   sellercatalogItems,
@@ -32,7 +33,6 @@ export default {
   discount,
   getAllReferalCodeSeller,
   getAllReferalCodeCustomer,
-  getAllNewSeller
-  
-
+  getAllNewSeller,
+  getAllFeaturedStores,
 };

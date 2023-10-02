@@ -30,7 +30,7 @@ import getAllReferalCodeCustomer from "./resolvers/Query/getAllReferalCodeCustom
 import getAllNewSeller from "./resolvers/Query/getAllNewSeller.js";
 import SellerInformation from "./resolvers/SellerInformation.js";
 import discount from "./resolvers/Query/discount.js";
-
+import getAllFeaturedStores from "./resolvers/Query/getAllFeaturedStores.js";
 
 // import updateSellerinfo from "./mutations/updateSellerinfo";
 var _context = null;
@@ -38,6 +38,7 @@ const resolvers = {
   updateBrandPayload,
   SellerInfo,
   SellerInformation,
+  // getAllFeaturedStores,
   // SellerInfo: {
   //   picture(parent, args, context, info) {
 
@@ -51,7 +52,6 @@ const resolvers = {
         parent?.isSeller || parent?.groups?.length || parent?.roles == "vendor";
       return isSeller;
     },
-
     async storeInfo(parent, args, context, info) {
       console.log("parent in storeInfo", parent);
       let storeInfo = {
@@ -150,7 +150,7 @@ const resolvers = {
         .skip(offset)
         .limit(limit)
         .toArray();
-      console.log("allUsersResponse",allUsersResponse)
+      console.log("allUsersResponse", allUsersResponse);
       const allUsersLength = allUsersResponse.length;
       console.log("Number of users:", allUsersLength);
       let sellersWithProducts = allUsersResponse;
@@ -190,7 +190,6 @@ const resolvers = {
 
       return sellersWithProducts;
     },
-
     sellerCatalogItems,
     sellerProducts,
     getSellerOrders,
@@ -200,8 +199,7 @@ const resolvers = {
     getAllReferalCodeCustomer,
     getAllNewSeller,
     discount,
-   
-   
+    getAllFeaturedStores,
   },
   Mutation: {
     createSellerDiscountCode,
@@ -211,7 +209,6 @@ const resolvers = {
     createBrands,
     updateBrands,
     removeBrands,
-
     async updateAccountpayBookEntry(parent, args, context, info) {
       let updateResponse = await updateUserAccountBook(context, args.input);
       return updateResponse;
@@ -330,5 +327,5 @@ export default async function register(app) {
     },
     queries,
     mutations,
-      });
+  });
 }
