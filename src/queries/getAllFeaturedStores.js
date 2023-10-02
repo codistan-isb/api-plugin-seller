@@ -50,5 +50,5 @@ export default async function getAllFeaturedStores(context, args) {
   // console.log("sellerIds", sellerIds);
   // let sellerInfo = await Accounts.find({ _id: { $in: sellerIds } }).toArray();
   // console.log("sellerInfo", sellerInfo);
-  return Accounts.find({ _id: { $in: sellerIds } });
+  return await Accounts.find({ _id: { $in: sellerIds } });
 }

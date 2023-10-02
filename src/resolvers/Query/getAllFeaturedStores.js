@@ -3,10 +3,8 @@ import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldReque
 
 export default async function getAllFeaturedStores(parent, args, ctx, info) {
   const { ...connectionArgs } = args;
-  console.log("args here featuredStoreName");
+  //   console.log("args here featuredStoreName");
   const featuredStoreName = await ctx.queries.getAllFeaturedStores(ctx, args);
-  console.log("featuredStoreName ", featuredStoreName);
-  //   return featuredStoreName;
   return getPaginatedResponse(featuredStoreName, connectionArgs, {
     includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
     includeHasPreviousPage: wasFieldRequested("pageInfo.hasPreviousPage", info),
