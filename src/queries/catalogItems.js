@@ -28,7 +28,25 @@ export default async function sellercatalogItems(
       "You must provide tagIds or sellerIds or both"
     );
   }
+  console.log("catalogBooleanFilters", catalogBooleanFilters);
 
+  if(catalogBooleanFilters?.$and?.length > 0){
+    console.log("catalogBooleanFilters in if", catalogBooleanFilters);
+   let booleanFilter1 = catalogBooleanFilters?.$and[0];  
+
+   const query = {
+    ...booleanFilter1,
+   }
+  //  if (sellerIds?.length > 0) {
+  //   query["product.variants.0.uploadedBy.userId"] = { $in: sellerIds };
+  // }
+  // if (tagIds?.length>0) {query["product.tagIds"] = { $in: tagIds }};
+console.log("query", query)
+   return Catalog.find(query);
+
+  }
+  else{
+    console.log("else")
   const query = {
     "product.isDeleted": { $ne: true },
     ...catalogBooleanFilters,
@@ -74,4 +92,5 @@ export default async function sellercatalogItems(
   }
 
   return Catalog.find(query);
+}
 }
