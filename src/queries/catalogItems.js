@@ -37,10 +37,9 @@ export default async function sellercatalogItems(
    const query = {
     ...booleanFilter1,
    }
-  //  if (sellerIds?.length > 0) {
-  //   query["product.variants.0.uploadedBy.userId"] = { $in: sellerIds };
-  // }
-  // if (tagIds?.length>0) {query["product.tagIds"] = { $in: tagIds }};
+
+    query["product.variants.0.uploadedBy.userId"] = { $in: sellerIds };
+  
 console.log("query", query)
    return Catalog.find(query);
 
