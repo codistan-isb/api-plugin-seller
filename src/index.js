@@ -150,7 +150,7 @@ const resolvers = {
         .skip(offset)
         .limit(limit)
         .toArray();
-      console.log("allUsersResponse", allUsersResponse);
+      // console.log("allUsersResponse", allUsersResponse);
       const allUsersLength = allUsersResponse.length;
       console.log("Number of users:", allUsersLength);
       let sellersWithProducts = allUsersResponse;

@@ -23,8 +23,8 @@ import catalogItems from "../../queries/catalogItems.js"
  * @returns {Promise<Object>} A CatalogItemConnection object
  */
 export default async function sellerCatalogItems(_, args, context, info) {
-  
-  const { sellerIds , tagIds: opaqueTagIds, booleanFilters, searchQuery, ...connectionArgs } = args;
+
+  const { sellerIds, tagIds: opaqueTagIds, booleanFilters, storeNameSearch, searchQuery, ...connectionArgs } = args;
 
   const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);
 
@@ -32,7 +32,6 @@ export default async function sellerCatalogItems(_, args, context, info) {
   if (Array.isArray(booleanFilters) && booleanFilters.length) {
     catalogBooleanFilters = await xformCatalogBooleanFilters(context, booleanFilters);
   }
-
   if (connectionArgs.sortBy === "featured") {
     if (!tagIds || tagIds.length === 0) {
       throw new ReactionError("not-found", "A tag ID is required for featured sort");
@@ -78,9 +77,10 @@ export default async function sellerCatalogItems(_, args, context, info) {
     catalogBooleanFilters,
     searchQuery,
     sellerIds,
+    storeNameSearch,
     tagIds
   });
-// console.log("eueuerur",query)
+  // console.log("eueuerur",query)
   return getPaginatedResponse(query, connectionArgs, {
     includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
     includeHasPreviousPage: wasFieldRequested("pageInfo.hasPreviousPage", info),

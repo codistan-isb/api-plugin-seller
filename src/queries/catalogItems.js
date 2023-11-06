@@ -15,7 +15,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  */
 export default async function sellercatalogItems(
   context,
-  { searchQuery, sellerIds, tagIds, catalogBooleanFilters } = {}
+  { searchQuery, sellerIds, tagIds, catalogBooleanFilters, storeNameSearch } = {}
 ) {
   const { collections } = context;
   const { Catalog } = collections;
@@ -29,67 +29,70 @@ export default async function sellercatalogItems(
     );
   }
   console.log("catalogBooleanFilters", catalogBooleanFilters);
+  console.log("storeNameSearch", storeNameSearch);
 
-  if(catalogBooleanFilters?.$and?.length > 0){
+  if (catalogBooleanFilters?.$and?.length > 0) {
     console.log("catalogBooleanFilters in if", catalogBooleanFilters);
-   let booleanFilter1 = catalogBooleanFilters?.$and[0];  
+    let booleanFilter1 = catalogBooleanFilters?.$and[0];
 
-   const query = {
-    ...booleanFilter1,
-   }
+    const query = {
+      ...booleanFilter1,
+    }
 
     query["product.variants.0.uploadedBy.userId"] = { $in: sellerIds };
-  
-console.log("query", query)
-   return Catalog.find(query);
+
+    console.log("query", query)
+    return Catalog.find(query);
 
   }
-  else{
+  else {
     console.log("else")
-  const query = {
-    "product.isDeleted": { $ne: true },
-    ...catalogBooleanFilters,
-    "product.isVisible": true,
-    "product.media": {
-      $elemMatch: {
-        URLs: { $exists: true, $ne: null, $ne: "", $ne: {} },
-      },
-    },
-    $and: [
-      {
-        "product.media.URLs.large": {
-          $not: { $regex: /public\/bizb-\d+\/\/.*/ },
+    const query = {
+      "product.isDeleted": { $ne: true },
+      ...catalogBooleanFilters,
+      "product.isVisible": true,
+      "product.media": {
+        $elemMatch: {
+          URLs: { $exists: true, $ne: null, $ne: "", $ne: {} },
         },
       },
-      {
-        "product.media.URLs.medium": {
-          $not: { $regex: /public\/bizb-\d+\/\/.*/ },
+      $and: [
+        {
+          "product.media.URLs.large": {
+            $not: { $regex: /public\/bizb-\d+\/\/.*/ },
+          },
         },
-      },
-      {
-        "product.media.URLs.small": {
-          $not: { $regex: /public\/bizb-\d+\/\/.*/ },
+        {
+          "product.media.URLs.medium": {
+            $not: { $regex: /public\/bizb-\d+\/\/.*/ },
+          },
         },
-      },
-      {
-        "product.media.URLs.original": {
-          $not: { $regex: /public\/bizb-\d+\/\/.*/ },
+        {
+          "product.media.URLs.small": {
+            $not: { $regex: /public\/bizb-\d+\/\/.*/ },
+          },
         },
-      },
-    ],
-  };
-
-  if (sellerIds) {
-    query["product.variants.0.uploadedBy.userId"] = { $in: sellerIds };
-  }
-  if (tagIds) query["product.tagIds"] = { $in: tagIds };
-
-  if (searchQuery) {
-    query.$text = {
-      $search: _.escapeRegExp(searchQuery),
+        {
+          "product.media.URLs.original": {
+            $not: { $regex: /public\/bizb-\d+\/\/.*/ },
+          },
+        },
+      ],
     };
-  }
+    if (storeNameSearch) {
+      query["product.variants.0.uploadedBy.name"] = storeNameSearch;
+    }
+    if (sellerIds) {
+      query["product.variants.0.uploadedBy.userId"] = { $in: sellerIds };
+    }
+    if (tagIds) query["product.tagIds"] = { $in: tagIds };
 
-  return Catalog.find(query);
-}
+    if (searchQuery) {
+      query.$text = {
+        $search: _.escapeRegExp(searchQuery),
+      };
+    }
+    console.log("query ", query);
+    return Catalog.find(query);
+  }
 }

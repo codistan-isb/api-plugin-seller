@@ -324,13 +324,24 @@ enum SortByField {
 
 type Store implements Node {
   _id: ID!
+  name: String
   storeName: String
+  phoneNumber: String
   shopId: ID
   storeLogo: String
+  isSeller: Boolean
   createdAt: String
   updatedAt: String
+  profile: profileDetail
+  roles: String
 }
-
+type profileDetail {
+  firstName: String
+  lastName: String
+  phone: String
+  picture: String
+  username: String
+}
 # type Brand implements Node {
 #   _id: ID!
 #   brandName: String
@@ -536,6 +547,8 @@ type Query {
     "Provide a list of shop IDs from which you want to get catalog items"
     sellerIds: [ID]!
 
+    storeNameSearch: String
+
     "Optionally provide a list of tag IDs to further filter the item list"
     tagIds: [ID]
 
@@ -607,6 +620,7 @@ type Query {
     offset: Int
     sortBy: SortByField = createdAt
     searchQuery: String
+    storeNameSearch: String
   ): StoreConnection!
 
   getAllBrands(

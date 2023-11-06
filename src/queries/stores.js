@@ -4,30 +4,31 @@ export default async function Stores(parent, args, ctx, info) {
   try {
     const { collections } = ctx;
     const { Accounts ,Products} = collections;
-    const { searchQuery } = args;
-    console.log("searchQuery",searchQuery);
-    if (searchQuery) {
+    const { searchQuery ,storeNameSearch} = args;
+    console.log("storeNameSearch",storeNameSearch);
+    // if (searchQuery) {
       
-        const matchingRiderIDs = await collections.Products.distinct("sellerId", {
-          $or: [
-            {
-              "profile.firstName": {
-                $regex: new RegExp(searchQuery, "i"),
-              },
-            },
-            {
-              "profile.lastName": {
-                $regex: new RegExp(searchQuery, "i"),
-              },
-            },
-            {
-              fullName: {
-                $regex: new RegExp(searchQuery, "i"),
-              },
-            },
-          ],
-        });
-    }
+    //     const matchingRiderIDs = await collections.Products.distinct("sellerId", {
+    //       $or: [
+    //         {
+    //           "profile.firstName": {
+    //             $regex: new RegExp(searchQuery, "i"),
+    //           },
+    //         },
+    //         {
+    //           "profile.lastName": {
+    //             $regex: new RegExp(searchQuery, "i"),
+    //           },
+    //         },
+    //         {
+    //           fullName: {
+    //             $regex: new RegExp(searchQuery, "i"),
+    //           },
+    //         },
+    //       ],
+    //     });
+    // }
+    
     const storeNames = Accounts.find({
       roles: "vendor",
     });
