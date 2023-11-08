@@ -1,18 +1,24 @@
 import getPaginatedResponse from "@reactioncommerce/api-utils/graphql/getPaginatedResponse.js";
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
-export default async function getAllNewSeller(
-    parent,
-    args,
+import getPaginatedResponseFromAggregate from "@reactioncommerce/api-utils/graphql/getPaginatedResponseFromAggregate.js";
+export default async function getAllNewSeller(parent, args, context, info) {
+  const { searchQuery, ...connectionArgs } = args;
+  const { collection, pipeline } = await context.queries.getAllNewSeller(
     context,
-    info
-){
-    const { searchQuery, ...connectionArgs } = args;
-    const sellerInfo = await context.queries.getAllNewSeller(context, args);
-  return sellerInfo;
-  
-    // return getPaginatedResponse(sellerInfo, connectionArgs, {
-    //   includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
-    //   includeHasPreviousPage: wasFieldRequested("pageInfo.hasPreviousPage", info),
-    //   includeTotalCount: wasFieldRequested("totalCount", info),
-    // });
+    args
+  );
+
+  return getPaginatedResponseFromAggregate(
+    collection,
+    pipeline,
+    { ...connectionArgs, sortBy: "name" },
+    {
+      includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
+      includeHasPreviousPage: wasFieldRequested(
+        "pageInfo.hasPreviousPage",
+        info
+      ),
+      includeTotalCount: wasFieldRequested("totalCount", info),
+    }
+  );
 }

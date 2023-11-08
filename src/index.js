@@ -146,6 +146,9 @@ const resolvers = {
 
       const filter = { roles: "vendor" };
 
+
+      
+
       const allUsersResponse = await Accounts.find(filter)
         .skip(offset)
         .limit(limit)
