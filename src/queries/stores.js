@@ -1,13 +1,11 @@
-
-
 export default async function Stores(parent, args, ctx, info) {
   try {
     const { collections } = ctx;
-    const { Accounts ,Products} = collections;
-    const { searchQuery ,storeNameSearch} = args;
-    console.log("storeNameSearch",storeNameSearch);
+    const { Accounts, Products } = collections;
+    const { searchQuery, storeNameSearch } = args;
+    console.log("storeNameSearch", storeNameSearch);
     // if (searchQuery) {
-      
+
     //     const matchingRiderIDs = await collections.Products.distinct("sellerId", {
     //       $or: [
     //         {
@@ -28,10 +26,18 @@ export default async function Stores(parent, args, ctx, info) {
     //       ],
     //     });
     // }
-    
-    const storeNames = Accounts.find({
+
+    let query = {
       roles: "vendor",
-    });
+    };
+
+    if (searchQuery) {
+      query.storeName = {
+        $regex: new RegExp(searchQuery, "i"),
+      };
+    }
+
+    const storeNames = Accounts.find(query);
     // console.log("storeNames", storeNames);
 
     return storeNames;
