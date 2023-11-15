@@ -7,6 +7,10 @@ input accountBookInput {
   AccountBookId: ID
 }
 
+enum BrandSortByField {
+  createdAt
+}
+
 type AccountBook {
   _id: ID!
   AccountTitle: String
@@ -624,16 +628,32 @@ type Query {
   ): StoreConnection!
 
   getAllBrands(
-    after: ConnectionCursor
-    first: ConnectionLimitInt
-    last: ConnectionLimitInt
-    before: ConnectionCursor
-    sortOrder: SortOrder = desc
-    offset: Int
-    sortBy: SortByField = createdAt
     searchQuery: String
-  ): updateBrandConnection!
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt
+
+    "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
+    offset: Int
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = asc
+
+    "By default, tags are sorted by ID. Set this to sort by one of the other allowed fields"
+    sortBy: BrandSortByField = createdAt
+  ): TagConnection
+
   discount: [discountConnection]
+
   getAllReferalCodeSeller(
     after: ConnectionCursor
     first: ConnectionLimitInt
