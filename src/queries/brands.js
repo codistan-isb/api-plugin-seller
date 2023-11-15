@@ -9,7 +9,8 @@ export default async function brands(parent, args, ctx, info) {
   let filter = { name: { $regex: /brand/i } };
   if (searchQuery) {
     filter = {
-      name: { $regex: new RegExp(`^brand-${searchQuery}`, "i") },
+      // name: { $regex: new RegExp(`^brand-${searchQuery}`, "i") },
+      name: { $regex: new RegExp(`brand.*${searchQuery}`, "i") },
     };
   }
 
