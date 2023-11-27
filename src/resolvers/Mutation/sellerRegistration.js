@@ -14,18 +14,14 @@ async function validateDiscountCode(context, code) {
 
 export default async function sellerRegistration(_, { input }, context) {
   const { Accounts, Groups } = context.collections;
-  const {
-    email,
-    discountCode,
-    bankDetail,
-  } = input;
+  const { email, discountCode, bankDetail } = input;
   const { injector, infos, collections } = context;
   console.log("input in sellerRegistration", input);
 
   if (discountCode) {
     await validateDiscountCode(context, discountCode);
   }
-  
+
   let bankName, bankAccountNumber, type, bankAccountTitle;
 
   // Check if bankDetail exists before destructuring its properties
@@ -33,7 +29,6 @@ export default async function sellerRegistration(_, { input }, context) {
     ({ bankName, bankAccountNumber, type, bankAccountTitle } = bankDetail);
   }
   console.log("bankDetail", bankDetail);
-
 
   const accountsServer = injector.get(server_1.AccountsServer);
   const accountsPassword = injector.get(password_1.AccountsPassword);
@@ -53,6 +48,20 @@ export default async function sellerRegistration(_, { input }, context) {
 
   if (existingCustomer) {
     console.log("getGroup ", getGroup);
+  
+    // Check if the store name already exists in the system
+
+    const storeNameRegex = new RegExp(input.storeName);
+    const existingStoresCount = await Accounts.countDocuments({
+      storeName: { $regex: storeNameRegex },
+    });
+    console.log("existingStoresCount", existingStoresCount);
+
+    if (existingStoresCount > 0) {
+      throw new Error(
+        "A store with this name already exists. Please choose a different name."
+      );
+    }
 
     // Update the existing customer account to become a seller
 
