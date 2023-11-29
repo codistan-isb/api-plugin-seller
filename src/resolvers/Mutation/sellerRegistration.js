@@ -112,6 +112,16 @@ export default async function sellerRegistration(_, { input }, context) {
   if (EmailExist) {
     throw new Error("You are Already A Seller");
   }
+  const storeNameRegex = new RegExp(input.storeName);
+  const existingStoresCount = await Accounts.countDocuments({
+    storeName: { $regex: storeNameRegex },
+  });
+  console.log("existingStoresCount", existingStoresCount);
+  if (existingStoresCount > 0) {
+    throw new Error(
+      "A store with this name already exists. Please choose a different name."
+    );
+  }
 
   try {
     input.createdAt = new Date();
