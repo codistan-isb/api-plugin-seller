@@ -1,6 +1,5 @@
 
 export default async function sellerUploadCount(parent, args, context, info) {
-    console.log("sellerOrderCount query args", args);
     let { startDate, endDate, skip, limit, } = args;
     let { collections } = context
     let { Products } = collections;
