@@ -436,16 +436,6 @@ type allFeaturedStoreResponse {
   storeId: String
   storeProductId: [String]
 }
-type sellerOrderCountPayload {
-  sellerId: String
-  storeName: String
-  orderCount: Float
-}
-type sellerUploadCountPayload {
-  _id: String
-  sellerName: String
-  productCount: Float
-}
 extend type Mutation {
   updateAccountpayBookEntry(input: accountBookInput): AccountBook
   updateSellerInfo(input: updateSellerInput): updateSellerInfopayload
@@ -698,17 +688,4 @@ type Query {
     itemPerPage: Int
     tagsId: String
   ): getAllNewSellerPayload
-
-  sellerOrderCount(
-    skip: Int = 0
-    limit: Int = 20
-    startDate: DateTime
-    endDate: DateTime
-  ): [sellerOrderCountPayload]
-  sellerUploadCount(
-    skip: Int = 0
-    limit: Int = 20
-    startDate: DateTime
-    endDate: DateTime
-  ): [sellerUploadCountPayload]
 }

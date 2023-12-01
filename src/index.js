@@ -31,8 +31,6 @@ import getAllNewSeller from "./resolvers/Query/getAllNewSeller.js";
 import SellerInformation from "./resolvers/SellerInformation.js";
 import discount from "./resolvers/Query/discount.js";
 import getAllFeaturedStores from "./resolvers/Query/getAllFeaturedStores.js";
-import sellerOrderCount from "./resolvers/Query/sellerOrderCount.js";
-import sellerUploadCount from "./resolvers/Query/sellerUploadCount.js";
 
 
 // import updateSellerinfo from "./mutations/updateSellerinfo";
@@ -203,8 +201,6 @@ const resolvers = {
     getAllNewSeller,
     discount,
     getAllFeaturedStores,
-    sellerOrderCount,
-    sellerUploadCount
   },
   Mutation: {
     createSellerDiscountCode,
