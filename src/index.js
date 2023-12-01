@@ -31,6 +31,9 @@ import getAllNewSeller from "./resolvers/Query/getAllNewSeller.js";
 import SellerInformation from "./resolvers/SellerInformation.js";
 import discount from "./resolvers/Query/discount.js";
 import getAllFeaturedStores from "./resolvers/Query/getAllFeaturedStores.js";
+import sellerOrderCount from "./resolvers/Query/sellerOrderCount.js";
+import sellerUploadCount from "./resolvers/Query/sellerUploadCount.js";
+
 
 // import updateSellerinfo from "./mutations/updateSellerinfo";
 var _context = null;
@@ -97,8 +100,8 @@ const resolvers = {
       let reaction_response =
         parent.fulfillmentMethods && parent.fulfillmentMethods.length > 0
           ? parent.fulfillmentMethods.map((id) => {
-              return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id);
-            })
+            return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id);
+          })
           : [];
       return reaction_response;
     },
@@ -124,8 +127,8 @@ const resolvers = {
         let FulfillmentMethods =
           userInfo?.fulfillmentMethods && userInfo.fulfillmentMethods.length > 0
             ? userInfo.fulfillmentMethods.map((id) => {
-                return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id);
-              })
+              return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id);
+            })
             : [];
 
         return {
@@ -200,6 +203,8 @@ const resolvers = {
     getAllNewSeller,
     discount,
     getAllFeaturedStores,
+    sellerOrderCount,
+    sellerUploadCount
   },
   Mutation: {
     createSellerDiscountCode,
@@ -221,8 +226,8 @@ const resolvers = {
       let reaction_response =
         updateResponse.length > 0
           ? updateResponse.map((id) => {
-              return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id);
-            })
+            return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id);
+          })
           : [];
       return reaction_response;
     },
