@@ -27,7 +27,6 @@ export default {
   getAllReferalCodeCustomer,
   getAllNewSeller,
   getAllFeaturedStores,
-
   // variants: (node, args, context) =>{
   //   console.log("Node ",node)
   //  return getVariants(context, node._id, true, args)},
