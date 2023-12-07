@@ -32,7 +32,7 @@ export default async function updateSellerInfo(context, input) {
     updates["pickUpAddress"] = pickUpAddress;
   }
   if (city) {
-    updates["city"] = city;
+    updates["storeAddress.city"] = city;
   }
   if (contactNumber) {
     updates["contactNumber"] = contactNumber;
@@ -54,6 +54,6 @@ export default async function updateSellerInfo(context, input) {
     { $set: updates },
     { returnOriginal: false }
   );
-  // console.log("updatedAccountResp", updatedAccountResp.value);
+  console.log("updatedAccountResp", updatedAccountResp);
   return updatedAccountResp.value;
 }
