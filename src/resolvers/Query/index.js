@@ -10,7 +10,7 @@ import getAllReferalCodeSeller from "./getAllReferalCodeSeller.js";
 import getAllReferalCodeCustomer from "./getAllReferalCodeCustomer.js";
 import getAllNewSeller from "./getAllNewSeller.js";
 import getAllFeaturedStores from "./getAllFeaturedStores.js";
-
+import sellerDetails from "./sellerDetails.js";
 // import getAllBrands from "./getAllBrands.js";
 import discount from "./discount.js";
 export default {
@@ -27,6 +27,7 @@ export default {
   getAllReferalCodeCustomer,
   getAllNewSeller,
   getAllFeaturedStores,
+  sellerDetails,
   // variants: (node, args, context) =>{
   //   console.log("Node ",node)
   //  return getVariants(context, node._id, true, args)},

@@ -12,8 +12,22 @@ async function validateDiscountCode(context, code) {
   if (!discountCode) throw new Error("Invalid Discount Code");
 }
 
+async function generateReferralCode(length) {
+  return new Promise((resolve) => {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let referralCode = "";
+
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      referralCode += characters.charAt(randomIndex);
+    }
+
+    resolve(referralCode);
+  });
+}
 export default async function sellerRegistration(_, { input }, context) {
-  const { Accounts, Groups } = context.collections;
+  const { Accounts, Groups, SellerDiscounts } = context.collections;
   const { email, discountCode, bankDetail } = input;
   const { injector, infos, collections } = context;
   console.log("input in sellerRegistration", input);
@@ -33,6 +47,8 @@ export default async function sellerRegistration(_, { input }, context) {
   const accountsServer = injector.get(server_1.AccountsServer);
   const accountsPassword = injector.get(password_1.AccountsPassword);
   let userId;
+  const referralCode = await generateReferralCode(8);
+  console.log("referralCode", referralCode);
 
   const existingCustomer = await Accounts.findOne({
     "emails.0.address": email,
@@ -48,7 +64,7 @@ export default async function sellerRegistration(_, { input }, context) {
 
   if (existingCustomer) {
     console.log("getGroup ", getGroup);
-  
+
     // Check if the store name already exists in the system
 
     const storeNameRegex = new RegExp(input.storeName);
@@ -62,7 +78,7 @@ export default async function sellerRegistration(_, { input }, context) {
         "A store with this name already exists. Please choose a different name."
       );
     }
-
+    console.log("existingCustomer", existingCustomer);
     // Update the existing customer account to become a seller
 
     const accounts = await Accounts.updateOne(
@@ -94,6 +110,8 @@ export default async function sellerRegistration(_, { input }, context) {
             bankAccountTitle,
           },
           updatedAt: new Date(),
+          referralCode: referralCode,
+          referredSellersCount: 0,
         },
       }
     );
@@ -182,10 +200,37 @@ export default async function sellerRegistration(_, { input }, context) {
         type,
         bankAccountTitle,
       },
+      referralCode: referralCode,
+      referredSellersCount: 0,
     };
     console.log("account", account);
     const accountAdded = await Accounts.insertOne(account);
     console.log("accountAdded", accountAdded);
+    if (accountAdded && accountAdded.result.ok === 1) {
+      const discountData = {
+        code: referralCode,
+        sellerId: accountAdded.insertedId,
+        value: 15,
+        description: "Referral Discount",
+        type: "COMMISSION",
+        isValid: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      const sellerDiscount = await SellerDiscounts.insertOne(discountData);
+      console.log("sellerDiscount", sellerDiscount);
+    }
+
+    if (input.joiningCode) {
+      const updatedAccount = await Accounts.updateOne(
+        { _id: accountAdded.insertedId },
+        { $set: { joiningCode: input.joiningCode } }
+      );
+
+      console.log("updatedAccount joining code", updatedAccount);
+    }
+
     return {
       message: "Seller created successfully",
       success: true,
