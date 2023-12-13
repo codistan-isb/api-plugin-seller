@@ -28,10 +28,10 @@ async function generateReferralCode(length) {
 }
 export default async function sellerRegistration(_, { input }, context) {
   const { Accounts, Groups, SellerDiscounts } = context.collections;
-  const { email, discountCode, bankDetail } = input;
+  const { email, discountCode, bankDetail, duration } = input;
   const { injector, infos, collections } = context;
   console.log("input in sellerRegistration", input);
-
+  const sellerDuration = duration || '1';
   if (discountCode) {
     await validateDiscountCode(context, discountCode);
   }
@@ -112,6 +112,7 @@ export default async function sellerRegistration(_, { input }, context) {
           updatedAt: new Date(),
           referralCode: referralCode,
           referredSellersCount: 0,
+          
         },
       }
     );
@@ -214,6 +215,7 @@ export default async function sellerRegistration(_, { input }, context) {
         description: "Referral Discount",
         type: "COMMISSION",
         isValid: true,
+        duration: sellerDuration,
         createdAt: new Date(),
         updatedAt: new Date(),
       };

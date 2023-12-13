@@ -303,6 +303,7 @@ input sellerRegistrationInput {
   image: String
   bankDetail: bankDetailsInput
   joiningCode: String
+  duration: String
 }
 
 enum WorkflowStatus {
