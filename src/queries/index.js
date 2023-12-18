@@ -16,6 +16,7 @@ import getAllReferalCodeSeller from "./getAllReferalCodeSeller.js";
 import getAllReferalCodeCustomer from "./getAllReferalCodeCustomer.js";
 import getAllNewSeller from "./getAllNewSeller.js";
 import getAllFeaturedStores from "./getAllFeaturedStores.js";
+import sellerDetails from "./sellerDetails.js";
 
 export default {
   sellercatalogItems,
@@ -35,4 +36,5 @@ export default {
   getAllReferalCodeCustomer,
   getAllNewSeller,
   getAllFeaturedStores,
+  sellerDetails,
 };

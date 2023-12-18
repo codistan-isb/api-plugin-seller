@@ -209,6 +209,14 @@ type documentsDetailPayload {
   cnicImageFront: String
   cnicImageBack: String
 }
+type storeAddressPayload {
+  address1: String
+  address2: String
+  city: String
+  country: String
+  postalcode: String
+}
+
 type updateSellerInfopayload {
   _id: ID
   image: String
@@ -294,6 +302,8 @@ input sellerRegistrationInput {
   discountCode: String
   image: String
   bankDetail: bankDetailsInput
+  joiningCode: String
+  duration: String
 }
 
 enum WorkflowStatus {
@@ -428,6 +438,26 @@ extend type Account {
 type getAllNewSellerPayload {
   AccountDetail: [Account]
   totalPage: Int
+}
+
+ type storeDetails{
+  id: ID
+  name: String
+  phoneNumber: String
+  email: String
+  image: String
+  storeName: String
+  pickUpAddress: String
+  city: String
+  contactNumber: String
+  bankDetail: bankDetailsPayload
+  documentDetails: documentsDetailPayload
+  isSeller: Boolean
+  referralCode: String
+  joiningCode: String
+  referredSellersCount: String
+  roles: String
+  storeAddress: storeAddressPayload
 }
 type allFeaturedStoreResponse {
   storeName: String
@@ -688,4 +718,8 @@ type Query {
     itemPerPage: Int
     tagsId: String
   ): getAllNewSellerPayload
+  sellerDetails(
+    sellerId: ID!
+  ): storeDetails
 }
+
