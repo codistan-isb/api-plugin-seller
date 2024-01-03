@@ -119,6 +119,9 @@ type storeInfo {
   bankDetail: bankDetailsPayload
   documentDetails: documentsDetailPayload
 }
+type sellerSoldProductCount{
+  count: Int
+}
 extend type Account {
   productVariants: [ProductVariant]
   identityVerified: Boolean
@@ -127,6 +130,7 @@ extend type Account {
   AvailableFulfillmentMethods: [AvailableFulfillmentMethod]
   storeInfo: storeInfo
   isSeller: Boolean
+  sellerSoldProductCount: sellerSoldProductCount
 }
 type datapayload {
   fullName: String
