@@ -66,6 +66,34 @@ const resolvers = {
       };
       return storeInfo;
     },
+    async sellerSoldProductCount(parent, args, context, info) {
+      console.log("parent in sellerSoldProductCount", parent);
+      const { collections } = context;
+      const { Products, SimpleInventory } = collections;
+    
+      const sellerProducts = await Products.find({ sellerId: parent.userId }).toArray();
+      
+      // Extracting product IDs
+      const productIds = sellerProducts.map(product => product._id);
+    
+      // Fetching sold products with inventoryInStock: 0 for the specific seller's products
+      const soldProducts = await SimpleInventory.find({
+        inventoryInStock: 0,
+        'productConfiguration.productId': { $in: productIds }
+      }).toArray();
+    
+      // Counting the number of sold products
+      const sellerSoldProductCount = soldProducts.length;
+    
+      console.log("sellerSoldProductCount", sellerSoldProductCount);
+    
+      const count = {
+        count: sellerSoldProductCount
+      };
+    
+      return count;
+    },
+    
     async productVariants(parent, args, context, info) {
       let productVariant = await getVariantsByUserId(
         context,
