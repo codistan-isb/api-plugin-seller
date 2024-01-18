@@ -32,6 +32,7 @@ import SellerInformation from "./resolvers/SellerInformation.js";
 import discount from "./resolvers/Query/discount.js";
 import getAllFeaturedStores from "./resolvers/Query/getAllFeaturedStores.js";
 import sellerDetails from "./resolvers/Query/sellerDetails.js";
+import Store from "./resolvers/Store.js";
 
 // import updateSellerinfo from "./mutations/updateSellerinfo";
 var _context = null;
@@ -39,6 +40,7 @@ const resolvers = {
   updateBrandPayload,
   SellerInfo,
   SellerInformation,
+  Store,
   // getAllFeaturedStores,
   // SellerInfo: {
   //   picture(parent, args, context, info) {
@@ -167,6 +169,8 @@ const resolvers = {
       }
     },
   },
+  
+
 
   Query: {
     async getAllSeller(parent, args, context, info) {
@@ -219,10 +223,10 @@ const resolvers = {
 
       return sellersWithProducts;
     },
+    getAllStore,
     sellerCatalogItems,
     sellerProducts,
     getSellerOrders,
-    getAllStore,
     getAllBrands,
     getAllReferalCodeSeller,
     getAllReferalCodeCustomer,
