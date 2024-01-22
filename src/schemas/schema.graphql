@@ -339,6 +339,9 @@ enum SortByField {
   createdAt
   updatedAt
 }
+type noOfProduct  {
+  count: Int
+}
 
 type Store implements Node {
   _id: ID!
@@ -352,7 +355,9 @@ type Store implements Node {
   updatedAt: String
   profile: profileDetail
   roles: String
+  noOfProduct: noOfProduct
 }
+
 type profileDetail {
   firstName: String
   lastName: String
