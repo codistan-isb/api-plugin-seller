@@ -119,7 +119,7 @@ type storeInfo {
   bankDetail: bankDetailsPayload
   documentDetails: documentsDetailPayload
 }
-type sellerSoldProductCount{
+type sellerSoldProductCount {
   count: Int
 }
 extend type Account {
@@ -339,7 +339,7 @@ enum SortByField {
   createdAt
   updatedAt
 }
-type noOfProduct  {
+type noOfProduct {
   count: Int
 }
 
@@ -365,18 +365,32 @@ type profileDetail {
   picture: String
   username: String
 }
-# type Brand implements Node {
-#   _id: ID!
-#   brandName: String
-#   brandCategory: String
 
-# }
 type StoreConnection {
   edges: [StoreEdge]
   nodes: [Store]
   pageInfo: PageInfo!
   totalCount: Int!
 }
+
+type StoreConnectionOptimize {
+  edges: [StoreEdge]
+  nodes: [Store]
+  totalRecords: Int! # Total number of records
+  currentPageNo: Int! # Current page number
+  isLastPage: Boolean! # Is this the last page?
+  startRecord: Int! # The starting record number for this page
+  endRecord: Int!
+  pageInfo: PageInfo!
+  # totalCount: Int!
+}
+
+# type Brand implements Node {
+#   _id: ID!
+#   brandName: String
+#   brandCategory: String
+
+# }
 # type BrandConnection {
 #   edges: [BrandEdge]
 #   nodes: [Brand]
@@ -449,7 +463,7 @@ type getAllNewSellerPayload {
   totalPage: Int
 }
 
- type storeDetails{
+type storeDetails {
   id: ID
   name: String
   phoneNumber: String
@@ -666,6 +680,16 @@ type Query {
     storeNameSearch: String
   ): StoreConnection!
 
+  getAllStoreOptimize(
+    after: ConnectionCursor
+    first: ConnectionLimitInt
+    last: ConnectionLimitInt
+    before: ConnectionCursor
+    offset: Int
+    searchQuery: String
+    storeNameSearch: String
+  ): StoreConnectionOptimize!
+
   getAllBrands(
     searchQuery: String
 
@@ -727,8 +751,5 @@ type Query {
     itemPerPage: Int
     tagsId: String
   ): getAllNewSellerPayload
-  sellerDetails(
-    sellerId: ID!
-  ): storeDetails
+  sellerDetails(sellerId: ID!): storeDetails
 }
-

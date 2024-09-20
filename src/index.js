@@ -17,7 +17,8 @@ import sellerRegistration from "./resolvers/Mutation/sellerRegistration.js";
 import updateSellerInfo from "./resolvers/Mutation/updateSellerInfo.js";
 import createSellerDiscountCode from "./resolvers/Mutation/createSellerDiscountCode.js";
 import createAnalytics from "./resolvers/Mutation/createAnalytics.js";
-import getAllStore from "./resolvers/Query/getAllStore.js";
+import { getAllStore } from "./resolvers/Query/getAllStore.js";
+import { getAllStoreOptimize } from "./resolvers/Query/getAllStore.js";
 import getAllBrands from "./resolvers/Query/getAllBrands.js";
 import createBrands from "./resolvers/Mutation/createBrands.js";
 import updateBrands from "./resolvers/Mutation/updateBrands.js";
@@ -72,30 +73,32 @@ const resolvers = {
       console.log("parent in sellerSoldProductCount", parent);
       const { collections } = context;
       const { Products, SimpleInventory } = collections;
-    
-      const sellerProducts = await Products.find({ sellerId: parent.userId }).toArray();
-      
+
+      const sellerProducts = await Products.find({
+        sellerId: parent.userId,
+      }).toArray();
+
       // Extracting product IDs
-      const productIds = sellerProducts.map(product => product._id);
-    
+      const productIds = sellerProducts.map((product) => product._id);
+
       // Fetching sold products with inventoryInStock: 0 for the specific seller's products
       const soldProducts = await SimpleInventory.find({
         inventoryInStock: 0,
-        'productConfiguration.productId': { $in: productIds }
+        "productConfiguration.productId": { $in: productIds },
       }).toArray();
-    
+
       // Counting the number of sold products
       const sellerSoldProductCount = soldProducts.length;
-    
+
       console.log("sellerSoldProductCount", sellerSoldProductCount);
-    
+
       const count = {
-        count: sellerSoldProductCount
+        count: sellerSoldProductCount,
       };
-    
+
       return count;
     },
-    
+
     async productVariants(parent, args, context, info) {
       let productVariant = await getVariantsByUserId(
         context,
@@ -128,8 +131,8 @@ const resolvers = {
       let reaction_response =
         parent.fulfillmentMethods && parent.fulfillmentMethods.length > 0
           ? parent.fulfillmentMethods.map((id) => {
-            return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id);
-          })
+              return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id);
+            })
           : [];
       return reaction_response;
     },
@@ -155,8 +158,8 @@ const resolvers = {
         let FulfillmentMethods =
           userInfo?.fulfillmentMethods && userInfo.fulfillmentMethods.length > 0
             ? userInfo.fulfillmentMethods.map((id) => {
-              return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id);
-            })
+                return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id);
+              })
             : [];
 
         return {
@@ -169,8 +172,6 @@ const resolvers = {
       }
     },
   },
-  
-
 
   Query: {
     async getAllSeller(parent, args, context, info) {
@@ -224,6 +225,7 @@ const resolvers = {
       return sellersWithProducts;
     },
     getAllStore,
+    getAllStoreOptimize,
     sellerCatalogItems,
     sellerProducts,
     getSellerOrders,
@@ -233,7 +235,7 @@ const resolvers = {
     getAllNewSeller,
     discount,
     getAllFeaturedStores,
-    sellerDetails
+    sellerDetails,
   },
   Mutation: {
     createSellerDiscountCode,
@@ -255,8 +257,8 @@ const resolvers = {
       let reaction_response =
         updateResponse.length > 0
           ? updateResponse.map((id) => {
-            return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id);
-          })
+              return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id);
+            })
           : [];
       return reaction_response;
     },
@@ -335,6 +337,7 @@ function myPublishProductToCatalog(
  * @returns {undefined}
  */
 export default async function register(app) {
+  console.log("SELLER PLUGIN REGISTER local =====");
   await app.registerPlugin({
     label: "api-plugin-seller",
     name: "api-plugin-seller",
