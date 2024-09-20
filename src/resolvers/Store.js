@@ -1,13 +1,13 @@
-
 export default {
-    async noOfProduct(parent, args, context, info) {
-    console.log("parent in getAllStore", parent);
+  async noOfProduct(parent, args, context, info) {
     const { collections } = context;
     const { Products } = collections;
-    let noOfProduct = await Products.find({ sellerId: parent.userId }).count();
-    console.log("noOfProduct", noOfProduct);
+    let noOfProduct = await Products.find({
+      sellerId: parent.userId,
+    }).count();
     const count = {
-      count:noOfProduct
+      count: noOfProduct,
     };
     return count;
-  }}
+  },
+};
