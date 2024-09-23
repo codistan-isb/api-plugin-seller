@@ -17,6 +17,7 @@ export default async function StoresOptimize(Accounts, Catalog, args) {
         $match: {
           "product.variants.uploadedBy.userId": { $exists: true },
           "product.isVisible": true,
+          "product.isDeleted": { $ne: true },
         },
       },
       {

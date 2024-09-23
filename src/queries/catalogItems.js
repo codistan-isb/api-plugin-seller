@@ -15,7 +15,13 @@ import ReactionError from "@reactioncommerce/reaction-error";
  */
 export default async function sellercatalogItems(
   context,
-  { searchQuery, sellerIds, tagIds, catalogBooleanFilters, storeNameSearch } = {}
+  {
+    searchQuery,
+    sellerIds,
+    tagIds,
+    catalogBooleanFilters,
+    storeNameSearch,
+  } = {}
 ) {
   const { collections } = context;
   const { Catalog } = collections;
@@ -37,16 +43,14 @@ export default async function sellercatalogItems(
 
     const query = {
       ...booleanFilter1,
-    }
+    };
 
     query["product.variants.0.uploadedBy.userId"] = { $in: sellerIds };
 
-    console.log("query", query)
+    console.log("query", query);
     return Catalog.find(query);
-
-  }
-  else {
-    console.log("else")
+  } else {
+    console.log("else");
     const query = {
       "product.isDeleted": { $ne: true },
       ...catalogBooleanFilters,
