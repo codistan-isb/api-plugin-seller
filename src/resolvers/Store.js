@@ -19,7 +19,8 @@ export default {
 
     let noOfProduct = await Catalog.find({
       "product.variants.uploadedBy.userId": parent.userId,
-      "product.isVisible": true,
+      "product.isVisible": { $ne: false },
+      "product.isDeleted": { $ne: true },
     }).count();
 
     const count = {

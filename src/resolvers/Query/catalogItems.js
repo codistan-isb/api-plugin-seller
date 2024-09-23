@@ -4,8 +4,8 @@ import getPaginatedResponse from "@reactioncommerce/api-utils/graphql/getPaginat
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
 import { decodeShopOpaqueId, decodeTagOpaqueId } from "../../xforms/id.js";
 import xformCatalogBooleanFilters from "../../utils/catalogBooleanFilters.js";
-import catalogItemsAggregate from "../../queries/catalogItemsAggregate.js"
-import catalogItems from "../../queries/catalogItems.js"
+import catalogItemsAggregate from "../../queries/catalogItemsAggregate.js";
+import catalogItems from "../../queries/catalogItems.js";
 
 /**
  * @name Query/catalogItems
@@ -23,24 +23,42 @@ import catalogItems from "../../queries/catalogItems.js"
  * @returns {Promise<Object>} A CatalogItemConnection object
  */
 export default async function sellerCatalogItems(_, args, context, info) {
-
-  const { sellerIds, tagIds: opaqueTagIds, booleanFilters, storeNameSearch, searchQuery, ...connectionArgs } = args;
+  const {
+    sellerIds,
+    tagIds: opaqueTagIds,
+    booleanFilters,
+    storeNameSearch,
+    searchQuery,
+    ...connectionArgs
+  } = args;
 
   const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);
 
   let catalogBooleanFilters = {};
   if (Array.isArray(booleanFilters) && booleanFilters.length) {
-    catalogBooleanFilters = await xformCatalogBooleanFilters(context, booleanFilters);
+    catalogBooleanFilters = await xformCatalogBooleanFilters(
+      context,
+      booleanFilters
+    );
   }
   if (connectionArgs.sortBy === "featured") {
     if (!tagIds || tagIds.length === 0) {
-      throw new ReactionError("not-found", "A tag ID is required for featured sort");
+      throw new ReactionError(
+        "not-found",
+        "A tag ID is required for featured sort"
+      );
     }
     if (!sellerIds || sellerIds.length === 0) {
-      throw new ReactionError("not-found", "A Seller ID is required for fetching seller products");
+      throw new ReactionError(
+        "not-found",
+        "A Seller ID is required for fetching seller products"
+      );
     }
     if (tagIds.length > 1) {
-      throw new ReactionError("invalid-parameter", "Multiple tags cannot be sorted by featured. Only the first tag will be returned.");
+      throw new ReactionError(
+        "invalid-parameter",
+        "Multiple tags cannot be sorted by featured. Only the first tag will be returned."
+      );
     }
     const tagId = tagIds[0];
     return catalogItemsAggregate(context, {
@@ -48,7 +66,7 @@ export default async function sellerCatalogItems(_, args, context, info) {
       connectionArgs,
       searchQuery,
       sellerIds,
-      tagId
+      tagId,
     });
   }
 
@@ -59,15 +77,22 @@ export default async function sellerCatalogItems(_, args, context, info) {
 
     // Allow external pricing plugins to handle this if registered. We'll use the
     // first value returned that is a string.
-    for (const func of context.getFunctionsOfType("getMinPriceSortByFieldPath")) {
+    for (const func of context.getFunctionsOfType(
+      "getMinPriceSortByFieldPath"
+    )) {
       realSortByField = await func(context, { connectionArgs }); // eslint-disable-line no-await-in-loop
       if (typeof realSortByField === "string") break;
     }
 
     if (!realSortByField) {
-      Logger.warn("An attempt to sort catalog items by minPrice was rejected. " +
-        "Verify that you have a pricing plugin installed and it registers a getMinPriceSortByFieldPath function.");
-      throw new ReactionError("invalid-parameter", "Sorting by minPrice is not supported");
+      Logger.warn(
+        "An attempt to sort catalog items by minPrice was rejected. " +
+          "Verify that you have a pricing plugin installed and it registers a getMinPriceSortByFieldPath function."
+      );
+      throw new ReactionError(
+        "invalid-parameter",
+        "Sorting by minPrice is not supported"
+      );
     }
 
     connectionArgs.sortBy = realSortByField;
@@ -78,12 +103,12 @@ export default async function sellerCatalogItems(_, args, context, info) {
     searchQuery,
     sellerIds,
     storeNameSearch,
-    tagIds
+    tagIds,
   });
   // console.log("eueuerur",query)
   return getPaginatedResponse(query, connectionArgs, {
     includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
     includeHasPreviousPage: wasFieldRequested("pageInfo.hasPreviousPage", info),
-    includeTotalCount: wasFieldRequested("totalCount", info)
+    includeTotalCount: wasFieldRequested("totalCount", info),
   });
 }

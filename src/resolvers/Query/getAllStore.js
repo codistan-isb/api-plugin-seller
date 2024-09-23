@@ -1,6 +1,6 @@
 import getPaginatedResponse from "@reactioncommerce/api-utils/graphql/getPaginatedResponse.js";
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
-import StoresOptimize from "../../queries/storesOptimize.js";
+import StoresOptimize from "../../queries/optimizedQuery.js";
 import { applyPagination } from "../../utils/pagination.js";
 // import { StoresOptimize } from "../../queries/stores";
 

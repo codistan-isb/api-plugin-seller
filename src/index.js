@@ -337,7 +337,7 @@ function myPublishProductToCatalog(
  * @returns {undefined}
  */
 export default async function register(app) {
-  console.log("SELLER PLUGIN REGISTER local =====");
+  console.log("SELLER PLUGIN REGISTER local");
   await app.registerPlugin({
     label: "api-plugin-seller",
     name: "api-plugin-seller",
