@@ -105,7 +105,16 @@ export default async function sellerCatalogItems(_, args, context, info) {
     storeNameSearch,
     tagIds,
   });
-  // console.log("eueuerur",query)
+  // const data = await query.toArray();
+
+  // // Extract and log only the pricing data
+  // data.forEach((item) => {
+  //   if (item.product && item.product.pricing) {
+  //     console.log("Pricing Data =====>", item.product.pricing);
+  //   } else {
+  //     console.log("No pricing data available for this item.");
+  //   }
+  // });
   return getPaginatedResponse(query, connectionArgs, {
     includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
     includeHasPreviousPage: wasFieldRequested("pageInfo.hasPreviousPage", info),
