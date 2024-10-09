@@ -16,26 +16,49 @@ export async function getAllStore(parent, args, ctx, info) {
   });
 }
 
+// export async function getAllStoreOptimize(parent, args, ctx, info) {
+//   const { first = 10 } = args;
+//   const { collections } = ctx;
+//   const { Accounts, Catalog } = collections;
+
+//   // Fetch the sellers and their product counts
+//   const { sellers, totalRecords } = await StoresOptimize(
+//     Accounts,
+//     Catalog,
+//     args
+//   );
+
+//   // Sort the sellers by productCount in descending order
+//   const sortedSellers = sellers.sort((a, b) => b.productCount - a.productCount);
+
+//   // Apply the pagination logic
+//   const pagination = applyPagination({ first, totalRecords });
+
+//   return {
+//     nodes: sortedSellers,
+//     totalRecords,
+//     currentPageNo: 1,
+//     ...pagination,
+//   };
+// }
+
 export async function getAllStoreOptimize(parent, args, ctx, info) {
   const { first = 10 } = args;
   const { collections } = ctx;
   const { Accounts, Catalog } = collections;
 
-  // Fetch the sellers and their product counts
+  // Fetch the sellers and their product counts (already sorted in StoresOptimize)
   const { sellers, totalRecords } = await StoresOptimize(
     Accounts,
     Catalog,
     args
   );
 
-  // Sort the sellers by productCount in descending order
-  const sortedSellers = sellers.sort((a, b) => b.productCount - a.productCount);
-
-  // Apply the pagination logic
+  // Apply the pagination logic (no need to sort again)
   const pagination = applyPagination({ first, totalRecords });
 
   return {
-    nodes: sortedSellers,
+    nodes: sellers, // Use the sellers as returned by StoresOptimize
     totalRecords,
     currentPageNo: 1,
     ...pagination,

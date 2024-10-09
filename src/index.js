@@ -152,7 +152,7 @@ const resolvers = {
   CatalogProductVariant: {
     async uploadedBy(parent, args, context, info) {
       // console.log("uploadedBy parent", parent);
-      console.log("uploadedBy userId", parent.uploadedBy.userId);
+      // console.log("uploadedBy userId", parent.uploadedBy.userId);
       if (parent.uploadedBy.userId) {
         let userInfo = await getUserByUserId(context, parent.uploadedBy.userId);
         let FulfillmentMethods =
@@ -337,7 +337,7 @@ function myPublishProductToCatalog(
  * @returns {undefined}
  */
 export default async function register(app) {
-  console.log("SELLER PLUGIN REGISTER local");
+  console.log("SELLER PLUGIN REGISTER local=======");
   await app.registerPlugin({
     label: "api-plugin-seller",
     name: "api-plugin-seller",

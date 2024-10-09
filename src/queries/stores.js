@@ -30,7 +30,6 @@ export default async function Stores(parent, args, ctx, info) {
     let query = {
       roles: "vendor",
     };
-
     if (searchQuery) {
       query.storeName = {
         $regex: new RegExp(searchQuery, "i"),
