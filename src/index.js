@@ -15,6 +15,7 @@ import queries from "./queries/index.js";
 import getSellerOrders from "./resolvers/Query/getSellerOrders.js";
 import sellerRegistration from "./resolvers/Mutation/sellerRegistration.js";
 import updateSellerInfo from "./resolvers/Mutation/updateSellerInfo.js";
+import updateSellerInfoForAdmin from "./resolvers/Mutation/updateSellerInfoForAdmin.js";
 import createSellerDiscountCode from "./resolvers/Mutation/createSellerDiscountCode.js";
 import createAnalytics from "./resolvers/Mutation/createAnalytics.js";
 import { getAllStore } from "./resolvers/Query/getAllStore.js";
@@ -34,6 +35,7 @@ import discount from "./resolvers/Query/discount.js";
 import getAllFeaturedStores from "./resolvers/Query/getAllFeaturedStores.js";
 import sellerDetails from "./resolvers/Query/sellerDetails.js";
 import Store from "./resolvers/Store.js";
+import deleteAccount from "./resolvers/Mutation/deleteAccount.js";
 
 // import updateSellerinfo from "./mutations/updateSellerinfo";
 var _context = null;
@@ -131,8 +133,8 @@ const resolvers = {
       let reaction_response =
         parent.fulfillmentMethods && parent.fulfillmentMethods.length > 0
           ? parent.fulfillmentMethods.map((id) => {
-              return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id);
-            })
+            return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id);
+          })
           : [];
       return reaction_response;
     },
@@ -151,15 +153,15 @@ const resolvers = {
   },
   CatalogProductVariant: {
     async uploadedBy(parent, args, context, info) {
-      // console.log("uploadedBy parent", parent);
-      // console.log("uploadedBy userId", parent.uploadedBy.userId);
+      console.log("uploadedBy parent", parent);
+      console.log("uploadedBy userId", parent.uploadedBy.userId);
       if (parent.uploadedBy.userId) {
         let userInfo = await getUserByUserId(context, parent.uploadedBy.userId);
         let FulfillmentMethods =
           userInfo?.fulfillmentMethods && userInfo.fulfillmentMethods.length > 0
             ? userInfo.fulfillmentMethods.map((id) => {
-                return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id);
-              })
+              return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id);
+            })
             : [];
 
         return {
@@ -241,8 +243,10 @@ const resolvers = {
     createSellerDiscountCode,
     createAnalytics,
     updateSellerInfo,
+    updateSellerInfoForAdmin,
     sellerRegistration,
     createBrands,
+    deleteAccount,
     updateBrands,
     removeBrands,
     async updateAccountpayBookEntry(parent, args, context, info) {
@@ -257,8 +261,8 @@ const resolvers = {
       let reaction_response =
         updateResponse.length > 0
           ? updateResponse.map((id) => {
-              return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id);
-            })
+            return encodeOpaqueIdFunction("reaction/fulfillmentMethod", id);
+          })
           : [];
       return reaction_response;
     },
@@ -337,7 +341,7 @@ function myPublishProductToCatalog(
  * @returns {undefined}
  */
 export default async function register(app) {
-  console.log("SELLER PLUGIN REGISTER local=======");
+  console.log("SELLER PLUGIN REGISTER local===+=+_=_=_=_=_==");
   await app.registerPlugin({
     label: "api-plugin-seller",
     name: "api-plugin-seller",

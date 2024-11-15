@@ -6,6 +6,7 @@ import createBrands from "./createBrands.js";
 import updateBrands from "./updateBrands.js";
 import removeBrands from "./removeBrands.js";
 import deleteAccount from "./deleteAccount.js";
+import updateSellerInfoForAdmin from "./updateSellerInfoForAdmin.js";
 export default {
   updateSellerInfo,
   sellerRegistration,
@@ -15,4 +16,5 @@ export default {
   updateBrands,
   removeBrands,
   deleteAccount,
+  updateSellerInfoForAdmin
 };

@@ -192,17 +192,21 @@ type Paymentpayload {
 }
 
 input bankDetailsInput {
+  isActive: Boolean
   type: String
   bankName: String
   bankAccountNumber: String
   bankAccountTitle: String
 }
+
 type bankDetailsPayload {
+  isActive: Boolean
   type: String
   bankName: String
   bankAccountNumber: String
   bankAccountTitle: String
 }
+
 input documentsDetailInput {
   cnicNumber: String
   cnicImageFront: String
@@ -227,10 +231,20 @@ type updateSellerInfopayload {
   storeName: String
   pickUpAddress: String
   city: String
+  name: String
   contactNumber: String
-  bankDetail: bankDetailsPayload
+  bankDetail: [bankDetailsPayload]
   documentDetails: documentsDetailPayload
+  profilePicture: String
 }
+
+type updateSellerInfopayloadForAdmin {
+  userId: ID
+  storeName: String
+  name: String
+  newPassword: String
+}
+
 type SellerInfo implements Node {
   _id: ID!
   name: String
@@ -281,11 +295,19 @@ input updateSellerInput {
   image: String
   storeName: String
   pickUpAddress: String
+  name: String
   city: String
   contactNumber: String
-  bankDetail: bankDetailsInput
+  bankDetail: [bankDetailsInput]
   documentDetails: documentsDetailInput
+  profilePicture: String
 }
+
+input updateSellerInputForAdmin {
+  userId: ID
+  newPassword: String
+}
+
 type SuccessInfo {
   message: String
   success: Boolean
@@ -492,6 +514,9 @@ type allFeaturedStoreResponse {
 extend type Mutation {
   updateAccountpayBookEntry(input: accountBookInput): AccountBook
   updateSellerInfo(input: updateSellerInput): updateSellerInfopayload
+  updateSellerInfoForAdmin(
+    input: updateSellerInputForAdmin
+  ): updateSellerInfopayloadForAdmin
   sellerRegistration(input: sellerRegistrationInput): SuccessInfo
   updateAvailableFulfillmentMethodEntry(
     input: AvailableFulfillmentMethodInput

@@ -17,14 +17,13 @@ export default async function sellerDetails(parent, args, context, info) {
     emails,
     contactNumber,
     storeName,
-
-    bankDetail: { type, bankName, bankAccountNumber, bankAccountTitle }= {},
-    documentDetails: { cnicNumber, cnicImageFront, cnicImageBack }= {},
+    bankDetail: { type, bankName, bankAccountNumber, bankAccountTitle } = {},
+    documentDetails: { cnicNumber, cnicImageFront, cnicImageBack } = {},
     isSeller,
     referralCode,
     joiningCode,
     roles,
-    storeAddress: { city, country, address1, address2, postalCode }= {},
+    storeAddress: { city, country, address1, address2, postalCode } = {},
     pickUpAddress,
     referredSellersCount,
   } = account;
