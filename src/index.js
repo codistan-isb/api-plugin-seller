@@ -59,7 +59,6 @@ const resolvers = {
       return isSeller;
     },
     async storeInfo(parent, args, context, info) {
-      console.log("parent in storeInfo", parent);
       let storeInfo = {
         image: parent?.storeLogo,
         storeName: parent?.storeName,
@@ -153,8 +152,6 @@ const resolvers = {
   },
   CatalogProductVariant: {
     async uploadedBy(parent, args, context, info) {
-      console.log("uploadedBy parent", parent);
-      console.log("uploadedBy userId", parent.uploadedBy.userId);
       if (parent.uploadedBy.userId) {
         let userInfo = await getUserByUserId(context, parent.uploadedBy.userId);
         let FulfillmentMethods =
