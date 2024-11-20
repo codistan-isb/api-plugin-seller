@@ -116,7 +116,7 @@ type storeInfo {
   pickUpAddress: String
   city: String
   contactNumber: String
-  bankDetail: bankDetailsPayload
+  bankDetail: [bankDetailsPayload]
   documentDetails: documentsDetailPayload
 }
 type sellerSoldProductCount {
@@ -495,7 +495,7 @@ type storeDetails {
   pickUpAddress: String
   city: String
   contactNumber: String
-  bankDetail: bankDetailsPayload
+  bankDetail: [bankDetailsPayload]
   documentDetails: documentsDetailPayload
   isSeller: Boolean
   referralCode: String
