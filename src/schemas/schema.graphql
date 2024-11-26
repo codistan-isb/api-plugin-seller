@@ -236,6 +236,7 @@ type updateSellerInfopayload {
   bankDetail: [bankDetailsPayload]
   documentDetails: documentsDetailPayload
   profilePicture: String
+  email: String
 }
 
 type updateSellerInfopayloadForAdmin {
@@ -301,6 +302,7 @@ input updateSellerInput {
   bankDetail: [bankDetailsInput]
   documentDetails: documentsDetailInput
   profilePicture: String
+  email: String
 }
 
 input updateSellerInputForAdmin {
