@@ -39,6 +39,17 @@ import deleteAccount from "./resolvers/Mutation/deleteAccount.js";
 
 // import updateSellerinfo from "./mutations/updateSellerinfo";
 var _context = null;
+
+function ensureArray(item) {
+  if (Array.isArray(item)) {
+    return item; // Return as is if already an array
+  } else if (item) {
+    return [item]; // Wrap in an array if it's a single object
+  } else {
+    return []; // Return an empty array if null or undefined
+  }
+}
+
 const resolvers = {
   updateBrandPayload,
   SellerInfo,
@@ -65,11 +76,17 @@ const resolvers = {
         pickUpAddress: parent?.pickUpAddress,
         city: parent?.storeAddress?.city,
         contactNumber: parent?.contactNumber,
-        bankDetail: parent?.bankDetail,
+        // bankDetail: parent?.bankDetail,
+        bankDetail: ensureArray(parent?.bankDetail),
         documentDetails: parent?.documentDetails,
       };
+
+      console.log("STORE INFO", storeInfo);
       return storeInfo;
     },
+
+
+
     async sellerSoldProductCount(parent, args, context, info) {
       console.log("parent in sellerSoldProductCount", parent);
       const { collections } = context;
