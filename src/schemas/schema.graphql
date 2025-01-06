@@ -297,6 +297,7 @@ input updateSellerInput {
   storeName: String
   pickUpAddress: String
   name: String
+  username: String
   city: String
   contactNumber: String
   bankDetail: [bankDetailsInput]
