@@ -13,6 +13,7 @@ import getAllFeaturedStores from "./getAllFeaturedStores.js";
 import sellerDetails from "./sellerDetails.js";
 // import getAllBrands from "./getAllBrands.js";
 import discount from "./discount.js";
+import getSellerStore from "./getSellerStore.js"
 export default {
   sellerCatalogItems,
   catalogItemProduct,
@@ -20,6 +21,7 @@ export default {
   sellerProduct,
   getSellerOrders,
   sellerProducts,
+  getSellerStore,
   // getAllBrands,
   getAllStore,
   discount,

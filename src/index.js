@@ -20,6 +20,7 @@ import createSellerDiscountCode from "./resolvers/Mutation/createSellerDiscountC
 import createAnalytics from "./resolvers/Mutation/createAnalytics.js";
 import { getAllStore } from "./resolvers/Query/getAllStore.js";
 import { getAllStoreOptimize } from "./resolvers/Query/getAllStore.js";
+
 import getAllBrands from "./resolvers/Query/getAllBrands.js";
 import createBrands from "./resolvers/Mutation/createBrands.js";
 import updateBrands from "./resolvers/Mutation/updateBrands.js";
@@ -36,6 +37,7 @@ import getAllFeaturedStores from "./resolvers/Query/getAllFeaturedStores.js";
 import sellerDetails from "./resolvers/Query/sellerDetails.js";
 import Store from "./resolvers/Store.js";
 import deleteAccount from "./resolvers/Mutation/deleteAccount.js";
+import getSellerStores from "./resolvers/Query/getSellerStore.js";
 
 // import updateSellerinfo from "./mutations/updateSellerinfo";
 var _context = null;
@@ -242,6 +244,7 @@ const resolvers = {
     },
     getAllStore,
     getAllStoreOptimize,
+    getSellerStores,
     sellerCatalogItems,
     sellerProducts,
     getSellerOrders,
@@ -355,7 +358,7 @@ function myPublishProductToCatalog(
  * @returns {undefined}
  */
 export default async function register(app) {
-  console.log("SELLER PLUGIN REGISTER local===+=+_=_=_=_=_==");
+  console.log("SELLER PLUGIN REGISTER local");
   await app.registerPlugin({
     label: "api-plugin-seller",
     name: "api-plugin-seller",
