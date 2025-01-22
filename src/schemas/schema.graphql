@@ -514,6 +514,17 @@ type allFeaturedStoreResponse {
   storeId: String
   storeProductId: [String]
 }
+
+type fetchSeller {
+  _id: ID!
+  storeName: String
+}
+
+type sellerRecordPayload {
+  totalCount: Int
+  data: [fetchSeller]
+}
+
 extend type Mutation {
   updateAccountpayBookEntry(input: accountBookInput): AccountBook
   updateSellerInfo(input: updateSellerInput): updateSellerInfopayload
@@ -567,6 +578,8 @@ type Query {
     "Shop ID"
     shopId: ID!
   ): Product
+
+  getSellerStores(searchQuery: String): sellerRecordPayload
 
   "Query for a list of Products"
   sellerProducts(

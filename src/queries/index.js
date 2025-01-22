@@ -17,11 +17,13 @@ import getAllReferalCodeCustomer from "./getAllReferalCodeCustomer.js";
 import getAllNewSeller from "./getAllNewSeller.js";
 import getAllFeaturedStores from "./getAllFeaturedStores.js";
 import sellerDetails from "./sellerDetails.js";
+import getSellerStore from "./getSellerStore.js"
 
 export default {
   sellercatalogItems,
   catalogItemsAggregate,
   catalogItemProduct,
+  getSellerStore,
   findCatalogProductsAndVariants,
   sellerProduct,
   getSellerOrders,
