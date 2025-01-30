@@ -110,9 +110,10 @@ export default async function sellerRegistration(_, { input }, context) {
             bankAccountTitle,
           },
           updatedAt: new Date(),
+          createdAt: new Date(),
           referralCode: referralCode,
           referredSellersCount: 0,
-          
+
         },
       }
     );
