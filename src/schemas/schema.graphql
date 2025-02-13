@@ -643,7 +643,7 @@ type Query {
 
   sellerCatalogItems(
     "Provide a list of shop IDs from which you want to get catalog items"
-    sellerIds: [ID]!
+    sellerIds: [ID]
 
     storeNameSearch: String
 
@@ -679,6 +679,13 @@ type Query {
 
     "By default, items are sorted by when they were last updated, most recently updated first. Set this to sort by one of the other allowed fields"
     sortBy: CatalogItemSortByField = updatedAt
+  ): CatalogItemConnection
+
+  getSellerProductByName(
+    storeNameSearch: String
+    searchQuery: String
+    tagIds: [ID]
+    booleanFilters: [CatalogBooleanFilter]
   ): CatalogItemConnection
 
   getSellerOrders(
