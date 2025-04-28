@@ -67,7 +67,7 @@ export default async function sellerRegistration(_, { input }, context) {
 
     // Check if the store name already exists in the system
 
-    const storeNameRegex = new RegExp(input.storeName);
+    const storeNameRegex = new RegExp(input.storeName.trim());
     const existingStoresCount = await Accounts.countDocuments({
       storeName: { $regex: storeNameRegex },
     });
@@ -90,7 +90,7 @@ export default async function sellerRegistration(_, { input }, context) {
           isSeller: true,
           state: input.state,
           name: input.fullName,
-          storeName: input.storeName,
+          storeName: input.storeName.trim(),
           storeAddress: {
             address1: input.address2,
             city: input.city,
@@ -180,7 +180,7 @@ export default async function sellerRegistration(_, { input }, context) {
       },
       isSeller: true,
       state: input.state,
-      storeName: input.storeName,
+      storeName: input.storeName.trim(),
       storeAddress: {
         address1: input.address2,
         city: input.city,
@@ -205,9 +205,11 @@ export default async function sellerRegistration(_, { input }, context) {
       referralCode: referralCode,
       referredSellersCount: 0,
     };
+    console.log("account. billing", account.billing);
+
     console.log("account", account);
     const accountAdded = await Accounts.insertOne(account);
-    console.log("accountAdded", accountAdded);
+    // console.log("accountAdded", accountAdded);
     if (accountAdded && accountAdded.result.ok === 1) {
       const discountData = {
         code: referralCode,
