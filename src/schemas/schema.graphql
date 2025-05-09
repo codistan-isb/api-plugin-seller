@@ -162,7 +162,7 @@ type itemsPayload {
   _id: ID
   title: String
   subtotal: String
-
+  workflow: workflowPayload
   quantity: Int
 }
 type shippingPayload {
@@ -337,9 +337,9 @@ input sellerRegistrationInput {
 
 enum WorkflowStatus {
   inprogress
-  completed
+  Completed
   created
-  cancelled
+  Cancelled
   new
 }
 type sellerOrder {
@@ -480,6 +480,7 @@ type discountConnection {
   name: String
   totalCount: Int
 }
+
 extend type Account {
   products: [Product]
 }
