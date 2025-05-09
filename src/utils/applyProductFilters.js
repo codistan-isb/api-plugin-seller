@@ -52,6 +52,10 @@ const filters = new SimpleSchema({
     optional: true,
     defaultValue: false,
   },
+  status: {
+    type: String,
+    optional: true,
+  },
 });
 
 /**
@@ -181,10 +185,11 @@ export default function applyProductFilters(context, productFilters) {
         isDeleted: productFilters.isArchived,
       };
     }
-    if (productFilters.status !== undefined) {
+    if (productFilters.status !== undefined || productFilters["workflow.status"] !== undefined) {
+      const statusValue = productFilters.status || productFilters["workflow.status"];
       selector = {
         ...selector,
-        "workflow.workflow.0": productFilters.status,
+        "workflow.status": statusValue,
       };
     }
 
