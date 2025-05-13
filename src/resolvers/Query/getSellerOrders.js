@@ -12,13 +12,19 @@ export default async function getSellerOrders(_, args, context, info) {
     selector["sellerId"] = sellerId;
   }
 
+  // if (status) {
+  //   selector["status"] = status;
+  // }
+
   if (status) {
     selector["status"] = status;
+  } else {
+    // Exclude Cancelled and Completed if status is not provided
+    selector["status"] = { $nin: ["Cancelled", "Completed"] };
   }
-
   const query = await context.queries.getSellerOrders(context, selector);
 
-  console.log("query is ", query);
+  // console.log("query is ", query);
   //
   return getPaginatedResponse(query, connectionArgs, {
     includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),

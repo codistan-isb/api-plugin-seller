@@ -29,7 +29,7 @@ export default async function getSellerOrders(context, input) {
   //     productFilters.shopId.map(async (shopId) => {
   //       await context.validatePermissions("reaction:legacy:products", "read", {
   //         shopId,
-  //       });
+  //       });    
   //     })
   //   );
   console.log("seller orders input ", productFilters);
