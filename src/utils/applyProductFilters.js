@@ -185,14 +185,27 @@ export default function applyProductFilters(context, productFilters) {
         isDeleted: productFilters.isArchived,
       };
     }
+    // if (productFilters.status !== undefined || productFilters["workflow.status"] !== undefined) {
+    //   const statusValue = productFilters.status || productFilters["workflow.status"];
+    //   selector = {
+    //     ...selector,
+    //     "workflow.status": statusValue,
+    //   };
+    // }
+
     if (productFilters.status !== undefined || productFilters["workflow.status"] !== undefined) {
       const statusValue = productFilters.status || productFilters["workflow.status"];
       selector = {
         ...selector,
         "workflow.status": statusValue,
       };
+    } else {
+      // Apply default exclusion only when no status provided
+      selector = {
+        ...selector,
+        "workflow.status": { $nin: ["Cancelled", "Completed"] },
+      };
     }
-
     // filter by gte minimum price
     if (productFilters.priceMin && !productFilters.priceMax) {
       selector = {
